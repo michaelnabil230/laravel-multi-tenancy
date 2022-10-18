@@ -3,8 +3,8 @@
 namespace MichaelNabil230\MultiTenancy\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use MichaelNabil230\MultiTenancy\MultiTenancyServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
@@ -28,9 +28,7 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        /*
         $migration = include __DIR__.'/../database/migrations/create_laravel-multi-tenancy_table.php.stub';
         $migration->up();
-        */
     }
 }

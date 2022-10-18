@@ -6,14 +6,39 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up(): void
     {
-        Schema::create('laravel_multi_tenancy_table', function (Blueprint $table) {
-            $table->id();
-
-            // add fields
-
+        Schema::create('tenants', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->json('data')->nullable();
+            $table->foreignIdFor(config('multi-tenancy.owner_model', \App\Models\User::class), 'owner_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
+
+        Schema::create('domains', function (Blueprint $table) {
+            $table->id();
+            $table->string('domain')->unique();
+            $table->boolean('is_store')->default(false);
+            $table->boolean('is_verified')->default(false);
+            $table->foreignUuid('tenant_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('tenants');
+
+        Schema::dropIfExists('domains');
     }
 };

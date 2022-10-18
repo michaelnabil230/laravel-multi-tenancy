@@ -3,17 +3,14 @@
 namespace MichaelNabil230\MultiTenancy\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use MichaelNabil230\MultiTenancy\Models\Domain;
 
-/*
-class ModelFactory extends Factory
+class DomainFactory extends Factory
 {
-    protected $model = YourModel::class;
+    protected $model = Domain::class;
 
     public function definition()
     {
-        return [
-
-        ];
+        return [];
     }
 }
-*/
