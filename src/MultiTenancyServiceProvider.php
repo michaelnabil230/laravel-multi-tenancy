@@ -2,6 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy;
 
+use MichaelNabil230\MultiTenancy\Commands\MultiTenancyCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
