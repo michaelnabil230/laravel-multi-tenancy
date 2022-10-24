@@ -23,7 +23,9 @@ class InitializeTenancyByTenantUser extends IdentificationMiddleware
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                $this->initializeTenancy($request, $next, Auth::guard($guard)->user()->tenant);
+                $tenant = Auth::guard($guard)->user()->tenant;
+
+                $this->initializeTenancy($request, $next, $tenant);
             }
         }
 
@@ -32,7 +34,7 @@ class InitializeTenancyByTenantUser extends IdentificationMiddleware
 
     private function guards(): array
     {
-        $userModel = config('multi-tenancy.owner_model', \App\Model\User::class);
+        $userModel = config('multi-tenancy.owner_model', \App\Models\User::class);
 
         $provider = collect(config('auth.providers'))
             ->filter(fn ($provider) => $provider['model'] == $userModel)

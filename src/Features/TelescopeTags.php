@@ -24,7 +24,7 @@ class TelescopeTags implements Feature
 
             if (tenancy()->initialized) {
                 $tags = [
-                    'tenant:'.$tenancy->tenant->id,
+                    'tenant:'.$tenancy->tenant->getKey(),
                 ];
             }
 

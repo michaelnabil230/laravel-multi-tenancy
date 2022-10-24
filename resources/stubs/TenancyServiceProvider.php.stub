@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
+use MichaelNabil230\MultiTenancy\Middleware;
+
+class TenancyServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        //
+    }
+
+    public function boot(): void
+    {
+        $this->mapRoutes();
+        $this->mapApiRoutes();
+    }
+
+    protected function mapRoutes(): void
+    {
+        Route::middleware(['web', Middleware\InitializeTenancyByTenantUser::class])
+            ->name('tenant.')
+            ->prefix('tenant/')
+            ->group(base_path('routes/tenant/web.php'));
+    }
+
+    protected function mapApiRoutes(): void
+    {
+        Route::prefix('api/tenant')
+            ->middleware(['api', Middleware\InitializeTenancyByRequestData::class])
+            ->group(base_path('routes/tenant/api.php'));
+    }
+}

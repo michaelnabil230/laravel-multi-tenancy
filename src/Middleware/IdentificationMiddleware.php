@@ -9,12 +9,12 @@ abstract class IdentificationMiddleware
     /** @var callable */
     public static $onFail;
 
-    public function initializeTenancy($request, $next, ...$resolverArguments)
+    public function initializeTenancy($request, $next, $tenant)
     {
         try {
-            tenancy()->initialize(...$resolverArguments);
+            tenancy()->initialize($tenant);
         } catch (TenancyNotInitializedException $e) {
-            $onFail = static::$onFail ?? function ($e) {
+            $onFail = static::$onFail ?? function ($e, $request, $next) {
                 throw $e;
             };
 

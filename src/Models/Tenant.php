@@ -57,7 +57,7 @@ class Tenant extends Model
      */
     public function domains(): HasMany
     {
-        return $this->hasMany(Domain::class);
+        return $this->hasMany(config('multi-tenancy.domain_model', Domain::class));
     }
 
     /**
@@ -70,6 +70,11 @@ class Tenant extends Model
         return $this->belongsTo(config('multi-tenancy.owner_model', \App\Models\User::class), 'owner_id');
     }
 
+    /**
+     * Create domain with tenant
+     *
+     * @return \MichaelNabil230\MultiTenancy\Models\Domain
+     */
     public function createDomain($data): Domain
     {
         if (! is_array($data)) {

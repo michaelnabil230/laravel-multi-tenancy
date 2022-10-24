@@ -29,7 +29,7 @@ class SeedDatabase
         Artisan::call('db:seed', [
             '--class' => $class,
             '--force' => $force,
-            '--tenant' => $tenant->tenant->id,
+            '--tenant' => $tenant->tenant->getKey(),
         ]);
     }
 }

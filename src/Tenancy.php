@@ -2,13 +2,13 @@
 
 namespace MichaelNabil230\MultiTenancy;
 
+use Illuminate\Database\Eloquent\Model;
 use MichaelNabil230\MultiTenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use MichaelNabil230\MultiTenancy\Models\Tenant;
 
 class Tenancy
 {
-    /** @var \MichaelNabil230\MultiTenancy\Models\Tenant|\Illuminate\Database\Eloquent\Model|null */
-    public $tenant;
+    public Tenant|Model|null $tenant;
 
     public bool $initialized = false;
 
@@ -18,7 +18,7 @@ class Tenancy
      * @param  \MichaelNabil230\MultiTenancy\Models\Tenant|int|string  $tenant
      * @return void
      */
-    public function initialize($tenant): void
+    public function initialize(Tenant|int|string $tenant): void
     {
         if (! is_object($tenant)) {
             $tenantId = $tenant;
@@ -29,7 +29,7 @@ class Tenancy
             }
         }
 
-        if ($this->initialized && $this->tenant->id === $tenant->id) {
+        if ($this->initialized && $this->tenant->getKey() === $tenant->getKey()) {
             return;
         }
 

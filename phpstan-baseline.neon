@@ -1,0 +1,81 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Class App\\\\Models\\\\User not found\\.$#"
+			count: 1
+			path: config/multi-tenancy.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Routing\\\\UrlGenerator\\:\\:setAssetRoot\\(\\)\\.$#"
+			count: 2
+			path: src/Bootstrappers/FilesystemTenancyBootstrapper.php
+
+		-
+			message: "#^Parameter \\$entry of anonymous function has invalid type Laravel\\\\Telescope\\\\IncomingEntry\\.$#"
+			count: 1
+			path: src/Features/TelescopeTags.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$domain\\.$#"
+			count: 1
+			path: src/Jobs/CheckDomainVerification.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: src/Listeners/SeedDatabase.php
+
+		-
+			message: "#^Static property MichaelNabil230\\\\MultiTenancy\\\\Middleware\\\\IdentificationMiddleware\\:\\:\\$onFail \\(callable\\) on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: src/Middleware/IdentificationMiddleware.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:\\$tenant\\.$#"
+			count: 1
+			path: src/Middleware/InitializeTenancyByTenantUser.php
+
+		-
+			message: "#^Class App\\\\Models\\\\User not found\\.$#"
+			count: 1
+			path: src/Middleware/InitializeTenancyByTenantUser.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$domain\\.$#"
+			count: 2
+			path: src/Models/Domain.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getRelationshipToPrimaryModel\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Scopes/ParentModel.php
+
+		-
+			message: "#^Class App\\\\Models\\\\User not found\\.$#"
+			count: 1
+			path: src/Models/Tenant.php
+
+		-
+			message: "#^Call to an undefined method MichaelNabil230\\\\MultiTenancy\\\\MultiTenancyServiceProvider\\:\\:dropConstrainedForeignId\\(\\)\\.$#"
+			count: 1
+			path: src/MultiTenancyServiceProvider.php
+
+		-
+			message: "#^Call to an undefined method MichaelNabil230\\\\MultiTenancy\\\\MultiTenancyServiceProvider\\:\\:foreignUuid\\(\\)\\.$#"
+			count: 1
+			path: src/MultiTenancyServiceProvider.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$domain\\.$#"
+			count: 2
+			path: src/Observers/DomainObserver.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$is_store\\.$#"
+			count: 2
+			path: src/Observers/DomainObserver.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$is_subdomain\\.$#"
+			count: 2
+			path: src/Observers/DomainObserver.php
