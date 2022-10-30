@@ -5,7 +5,10 @@
         "MichaelNabil230",
         "laravel",
         "laravel-multi-tenancy",
-        "multi-tenancy"
+        "multi-tenancy",
+        "tenancy",
+        "subscriptions",
+        "plan"
     ],
     "homepage": "https://github.com/michaelnabil230/laravel-multi-tenancy",
     "license": "MIT",
