@@ -1,15 +1,12 @@
 <?php
 
-use App\Models\User as Owner;
 use MichaelNabil230\MultiTenancy\Events;
 use MichaelNabil230\MultiTenancy\Listeners;
-use MichaelNabil230\MultiTenancy\Models\Domain;
-use MichaelNabil230\MultiTenancy\Models\Tenant;
 
 return [
 
     /**
-     * NameServer of server for ex:'ns1.contabo.net'.
+     * NameServer of the server for ex:'ns1.contabo.net'.
      */
     'name_server' => null,
 
@@ -61,7 +58,7 @@ return [
     ],
 
     /**
-     * Tenancy bootstrappers are executed when tenancy is initialized.
+     * Tenancy bootstrappers are executed when the tenancy is initialized.
      * Their responsibility is making Laravel features tenant-aware.
      *
      * To configure their behavior, see the config keys below.
@@ -78,9 +75,9 @@ return [
      *
      * Note: You need phpredis to use Redis tenancy.
      *
-     * Note: You don't need to use this if you're using Redis only for cache.
+     * Note: You don't need to use this if you're using Redis only for the cache.
      * Redis tenancy is only relevant if you're making direct Redis calls,
-     * either using the Redis facade or by injecting it as a dependency.
+     * either using the Redis facade or injecting it as a dependency.
      */
     'redis' => [
         'prefix_base' => 'tenant', // Each key in Redis will be prepended by this prefix_base, followed by the tenant id.
@@ -95,10 +92,10 @@ return [
      * This works for all Cache facade calls, cache() helper
      * calls and direct calls to injected cache stores.
      *
-     * Each key in cache will have a tag applied on it. This tag is used to
+     * Each key in the cache will have a tag applied to it. This tag is used to
      * scope the cache both when writing to it and when reading from it.
      *
-     * You can clear cache selectively by specifying the tag.
+     * You can clear the cache selectively by specifying the tag.
      */
     'cache' => [
         'tag_base' => 'tenant', // This tag_base, followed by the tenant_id, will form a tag that will be applied on each cache call.
@@ -150,8 +147,8 @@ return [
 
     /**
      * Features are classes that provide additional functionality
-     * not needed for tenancy to be bootstrapped. They are run
-     * regardless of whether tenancy has been initialized.
+     * not needed for the tenancy to be bootstrapped. They are run
+     * regardless of whether the tenancy has been initialized.
      *
      * See the documentation page for each class to
      * understand which ones you want to enable.
@@ -159,28 +156,42 @@ return [
     'features' => [
         // MichaelNabil230\MultiTenancy\Features\TelescopeTags::class,
         // MichaelNabil230\MultiTenancy\Features\TenantConfig::class,
+        // MichaelNabil230\MultiTenancy\Features\TenantSetting::class,
     ],
 
     /**
      * Parameters used by the db:seed command.
      */
     'seeder_parameters' => [
-        '--class' => MichaelNabil230\MultiTenancy\Database\Seeders\TenantDatabaseSeeder::class,
+        '--class' => 'TenantDatabaseSeeder',
         '--force' => true,
     ],
 
     /**
-     * Model of user owner tenant
+     * Subscription for Tenant
      */
-    'owner_model' => Owner::class,
+    'subscription' => [
+        /**
+         * Enable if you need tenant has subscription in your application
+         */
+        'enable' => false,
 
-    /**
-     * Model of Tenant
-     */
-    'tenant_model' => Tenant::class,
+        /**
+         * Route for the subscription index
+         */
+        // 'route' => route('subscription.index'),
 
-    /**
-     * Model of Domain
-     */
-    'domain_model' => Domain::class,
+        /**
+         * All events for subscription
+         */
+        'events' => [
+            // Subscription events
+            Events\Subscription\SubscriptionCreated::class => [],
+            Events\Subscription\SubscriptionUpdated::class => [],
+            Events\Subscription\SubscriptionCancelled::class => [],
+            Events\Subscription\SubscriptionChangePlan::class => [],
+            Events\Subscription\SubscriptionRenewed::class => [],
+            Events\Subscription\SubscriptionResume::class => [],
+        ],
+    ],
 ];

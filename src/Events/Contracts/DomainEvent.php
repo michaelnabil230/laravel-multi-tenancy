@@ -9,11 +9,7 @@ abstract class DomainEvent
 {
     use SerializesModels;
 
-    /** @var Domain */
-    public $domain;
-
-    public function __construct(Domain $domain)
+    public function __construct(public Domain $domain)
     {
-        $this->domain = $domain;
     }
 }

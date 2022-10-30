@@ -12,16 +12,16 @@ class PreventAccessFromCentralDomains
      *
      * @var callable|null
      */
-    public static $abortRequest;
+    public static $onFail = null;
 
     public function handle(Request $request, Closure $next)
     {
         if (in_array($request->getHost(), config('multi-tenancy.central_domains'))) {
-            $abortRequest = static::$abortRequest ?? function () {
+            $onFail = static::$onFail ?? function ($request, $next) {
                 abort(404);
             };
 
-            return $abortRequest($request, $next);
+            return $onFail($request, $next);
         }
 
         return $next($request);

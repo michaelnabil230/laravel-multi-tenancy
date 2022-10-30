@@ -2,12 +2,11 @@
 
 namespace MichaelNabil230\MultiTenancy\Exceptions;
 
-use Exception;
 use Facade\IgnitionContracts\BaseSolution;
 use Facade\IgnitionContracts\ProvidesSolution;
 use Facade\IgnitionContracts\Solution;
 
-class TenantCouldNotBeIdentifiedById extends Exception implements ProvidesSolution
+class TenantCouldNotBeIdentifiedById extends TenantCouldNotBeIdentifiedException implements ProvidesSolution
 {
     public function __construct($tenantId)
     {

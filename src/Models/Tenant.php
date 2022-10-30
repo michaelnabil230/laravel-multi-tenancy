@@ -8,10 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use MichaelNabil230\MultiTenancy\Events\Tenant as EventsTenant;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
+use MichaelNabil230\MultiTenancy\Traits\HasSubscriptions;
+use MichaelNabil230\MultiTenancy\Traits\HasValidationRules;
 
 class Tenant extends Model
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasSubscriptions, HasValidationRules;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +24,7 @@ class Tenant extends Model
     protected $fillable = [
         'data',
         'owner_id',
+        'trial_ends_at',
     ];
 
     /**
@@ -30,6 +34,7 @@ class Tenant extends Model
      */
     protected $casts = [
         'data' => 'array',
+        'trial_ends_at' => 'datetime',
     ];
 
     /**
@@ -37,7 +42,7 @@ class Tenant extends Model
      *
      * Allows for object-based events for native Eloquent events.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $dispatchesEvents = [
         'saving' => EventsTenant\SavingTenant::class,
@@ -57,7 +62,7 @@ class Tenant extends Model
      */
     public function domains(): HasMany
     {
-        return $this->hasMany(config('multi-tenancy.domain_model', Domain::class));
+        return $this->hasMany(MultiTenancy::domainModel());
     }
 
     /**
@@ -67,24 +72,6 @@ class Tenant extends Model
      */
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(config('multi-tenancy.owner_model', \App\Models\User::class), 'owner_id');
-    }
-
-    /**
-     * Create domain with tenant
-     *
-     * @return \MichaelNabil230\MultiTenancy\Models\Domain
-     */
-    public function createDomain($data): Domain
-    {
-        if (! is_array($data)) {
-            $data = ['domain' => $data];
-        }
-
-        $domain = (new Domain)->fill($data);
-        $domain->tenant()->associate($this);
-        $domain->save();
-
-        return $domain;
+        return $this->belongsTo(MultiTenancy::ownerModel(), 'owner_id');
     }
 }

@@ -1,14 +1,64 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Class App\\\\Models\\\\User not found\\.$#"
-			count: 1
-			path: config/multi-tenancy.php
-
-		-
 			message: "#^Call to an undefined method Illuminate\\\\Routing\\\\UrlGenerator\\:\\:setAssetRoot\\(\\)\\.$#"
 			count: 2
 			path: src/Bootstrappers/FilesystemTenancyBootstrapper.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$description\\.$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$name\\.$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$price\\.$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$slug\\.$#"
+			count: 2
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$ends_at\\.$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$starts_at\\.$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$trial_ends_at\\.$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$domains$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$email$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$password$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
+			message: "#^PHPDoc tag @return with type void is incompatible with native type array\\.$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
 
 		-
 			message: "#^Parameter \\$entry of anonymous function has invalid type Laravel\\\\Telescope\\\\IncomingEntry\\.$#"
@@ -16,19 +66,19 @@ parameters:
 			path: src/Features/TelescopeTags.php
 
 		-
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$id\\.$#"
+			count: 1
+			path: src/Features/TenantSetting.php
+
+		-
+			message: "#^Access to static property \\$cacheKey on an unknown class MichaelNabil230\\\\Setting\\\\Stores\\\\DatabaseSettingStore\\.$#"
+			count: 2
+			path: src/Features/TenantSetting.php
+
+		-
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$domain\\.$#"
 			count: 1
 			path: src/Jobs/CheckDomainVerification.php
-
-		-
-			message: "#^Result of && is always false\\.$#"
-			count: 1
-			path: src/Listeners/SeedDatabase.php
-
-		-
-			message: "#^Static property MichaelNabil230\\\\MultiTenancy\\\\Middleware\\\\IdentificationMiddleware\\:\\:\\$onFail \\(callable\\) on left side of \\?\\? is not nullable\\.$#"
-			count: 1
-			path: src/Middleware/IdentificationMiddleware.php
 
 		-
 			message: "#^Access to an undefined property Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:\\$tenant\\.$#"
@@ -36,14 +86,34 @@ parameters:
 			path: src/Middleware/InitializeTenancyByTenantUser.php
 
 		-
-			message: "#^Class App\\\\Models\\\\User not found\\.$#"
+			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
-			path: src/Middleware/InitializeTenancyByTenantUser.php
+			path: src/Middleware/VerifyBillableIsSubscribed.php
 
 		-
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$domain\\.$#"
-			count: 2
+			count: 1
 			path: src/Models/Domain.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$price\\.$#"
+			count: 1
+			path: src/Models/Plan.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$trial_interval\\.$#"
+			count: 1
+			path: src/Models/Plan.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$trial_period\\.$#"
+			count: 1
+			path: src/Models/Plan.php
+
+		-
+			message: "#^Method MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:getFeatureBySlug\\(\\) should return MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Feature\\|null but returns Illuminate\\\\Database\\\\Eloquent\\\\Model\\|null\\.$#"
+			count: 1
+			path: src/Models/Plan.php
 
 		-
 			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:getRelationshipToPrimaryModel\\(\\)\\.$#"
@@ -51,7 +121,67 @@ parameters:
 			path: src/Models/Scopes/ParentModel.php
 
 		-
-			message: "#^Class App\\\\Models\\\\User not found\\.$#"
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$invoice_interval\\.$#"
+			count: 2
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$invoice_period\\.$#"
+			count: 2
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$invoice_interval\\.$#"
+			count: 2
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$invoice_period\\.$#"
+			count: 2
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$ends_at\\.$#"
+			count: 2
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$trial_ends_at\\.$#"
+			count: 5
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\:\\:canceled\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Call to an undefined method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\:\\:notOnTrial\\(\\)\\.$#"
+			count: 1
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Call to function array_merge\\(\\) on a separate line has no effect\\.$#"
+			count: 1
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^PHPDoc tag @param for parameter \\$invoiceInterval with type string\\|null is not subtype of native type int\\|null\\.$#"
+			count: 1
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
+			count: 1
+			path: src/Models/Subscription.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Tenant\\:\\:\\$trial_ends_at\\.$#"
+			count: 2
+			path: src/Models/Tenant.php
+
+		-
+			message: "#^Method MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Tenant\\:\\:subscription\\(\\) should return MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\|null but returns Illuminate\\\\Database\\\\Eloquent\\\\Model\\|null\\.$#"
 			count: 1
 			path: src/Models/Tenant.php
 
@@ -71,7 +201,7 @@ parameters:
 			path: src/Observers/DomainObserver.php
 
 		-
-			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$is_store\\.$#"
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$is_premium\\.$#"
 			count: 2
 			path: src/Observers/DomainObserver.php
 
@@ -79,3 +209,23 @@ parameters:
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$is_subdomain\\.$#"
 			count: 2
 			path: src/Observers/DomainObserver.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$invoice_interval\\.$#"
+			count: 1
+			path: src/SubscriptionBuilder.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$invoice_period\\.$#"
+			count: 1
+			path: src/SubscriptionBuilder.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$trial_interval\\.$#"
+			count: 1
+			path: src/SubscriptionBuilder.php
+
+		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$trial_period\\.$#"
+			count: 1
+			path: src/SubscriptionBuilder.php

@@ -9,11 +9,7 @@ abstract class TenantEvent
 {
     use SerializesModels;
 
-    /** @var Tenant */
-    public $tenant;
-
-    public function __construct(Tenant $tenant)
+    public function __construct(public Tenant $tenant)
     {
-        $this->tenant = $tenant;
     }
 }

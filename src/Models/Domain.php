@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Str;
 use MichaelNabil230\MultiTenancy\Events\Domain as EventsDomain;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 use MichaelNabil230\MultiTenancy\Observers\DomainObserver;
 
 class Domain extends Model
@@ -18,6 +19,8 @@ class Domain extends Model
      */
     protected $fillable = [
         'domain',
+        'is_premium',
+        'is_verified',
         'tenant_id',
     ];
 
@@ -26,7 +29,7 @@ class Domain extends Model
      *
      * Allows for object-based events for native Eloquent events.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $dispatchesEvents = [
         'saving' => EventsDomain\SavingDomain::class,
@@ -56,23 +59,15 @@ class Domain extends Model
      */
     public function tenant(): BelongsTo
     {
-        return $this->belongsTo(config('multi-tenancy.tenant_model', Tenant::class));
+        $model = MultiTenancy::tenantModel();
+
+        return $this->belongsTo($model, (new $model)->getForeignKey());
     }
 
     /**
-     * Get the order's domain.
+     * Get the domain's isSubdomain.
      *
-     * @return Attribute
-     */
-    protected function domain(): Attribute
-    {
-        return Attribute::set(fn () => strtolower($this->domain));
-    }
-
-    /**
-     * Get the order's isSubdomain.
-     *
-     * @return Attribute
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function isSubdomain(): Attribute
     {

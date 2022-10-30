@@ -5,6 +5,7 @@ namespace MichaelNabil230\MultiTenancy\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 class InitializeTenancyByTenantUser extends IdentificationMiddleware
 {
@@ -34,7 +35,7 @@ class InitializeTenancyByTenantUser extends IdentificationMiddleware
 
     private function guards(): array
     {
-        $userModel = config('multi-tenancy.owner_model', \App\Models\User::class);
+        $userModel = MultiTenancy::ownerModel();
 
         $provider = collect(config('auth.providers'))
             ->filter(fn ($provider) => $provider['model'] == $userModel)

@@ -1,6 +1,6 @@
 <?php
 
-namespace MichaelNabil230\MultiTenancy\Models\Concerns;
+namespace MichaelNabil230\MultiTenancy\Traits;
 
 use MichaelNabil230\MultiTenancy\Models\Scopes\ParentModel;
 

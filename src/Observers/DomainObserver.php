@@ -16,6 +16,8 @@ class DomainObserver
      */
     public function saving(Domain $self)
     {
+        $self->domain = strtolower($self->domain);
+
         if ($domain = $self->newQuery()->where('domain', $self->domain)->first()) {
             if ($domain->getKey() !== $self->getKey()) {
                 throw new DomainOccupiedByOtherTenantException($self->domain);
@@ -31,7 +33,7 @@ class DomainObserver
      */
     public function created(Domain $domain)
     {
-        if ($domain->is_store && ! $domain->is_subdomain) {
+        if ($domain->is_premium && ! $domain->is_subdomain) {
             CheckDomainVerification::dispatch($domain);
         }
     }
@@ -46,7 +48,7 @@ class DomainObserver
     {
         $domain->update(['is_verified' => false]);
 
-        if ($domain->is_store && ! $domain->is_subdomain) {
+        if ($domain->is_premium && ! $domain->is_subdomain) {
             CheckDomainVerification::dispatch($domain);
         }
     }

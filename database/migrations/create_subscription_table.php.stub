@@ -1,0 +1,92 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use MichaelNabil230\MultiTenancy\Enums\PeriodicityType;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up(): void
+    {
+        if (! MultiTenancy::subscriptionEnable()) {
+            return;
+        }
+
+        Schema::create('plans', function (Blueprint $table) {
+            $table->id();
+            $table->json('slug')->unique();
+            $table->json('name');
+            $table->json('description')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->decimal('price')->default(0.00);
+            $table->smallInteger('trial_period')->unsigned()->default(0);
+            $table->string('trial_interval')->default(PeriodicityType::day->name);
+            $table->smallInteger('invoice_period')->unsigned()->default(1);
+            $table->string('invoice_interval')->default(PeriodicityType::month->name);
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('features', function (Blueprint $table) {
+            $table->id();
+            $table->json('slug')->unique();
+            $table->json('name');
+            $table->json('description')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('subscriptions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('plan_id')->constrained()->cascadeOnDelete();
+            $table->tenant();
+            $table->dateTime('trial_ends_at')->nullable();
+            $table->dateTime('starts_at')->nullable();
+            $table->dateTime('ends_at')->nullable();
+            $table->dateTime('canceled_at')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['plan_id', 'tenant_id']);
+        });
+
+        Schema::create('sections', function (Blueprint $table) {
+            $table->id();
+            $table->json('name');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        Schema::create('feature_plan', function (Blueprint $table) {
+            $table->foreignId('section_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('plan_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('feature_id')->constrained()->cascadeOnDelete();
+            $table->primary(['section_id', 'plan_id', 'feature_id']);
+            $table->unique(['section_id', 'plan_id', 'feature_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down(): void
+    {
+        if (! MultiTenancy::subscriptionEnable()) {
+            return;
+        }
+
+        Schema::dropIfExists('plans');
+        Schema::dropIfExists('features');
+        Schema::dropIfExists('feature_plan');
+        Schema::dropIfExists('sections');
+        Schema::dropIfExists('subscriptions');
+    }
+};

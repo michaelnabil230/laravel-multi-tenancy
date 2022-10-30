@@ -23,7 +23,7 @@ class InitializeTenancyByRequestData extends IdentificationMiddleware
     public function handle(Request $request, Closure $next)
     {
         if ($request->method() !== 'OPTIONS') {
-            $this->initializeTenancy($request, $next, $this->getPayload($request));
+            return $this->initializeTenancy($request, $next, $this->getPayload($request));
         }
 
         return $next($request);

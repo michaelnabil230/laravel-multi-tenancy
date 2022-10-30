@@ -3,12 +3,13 @@
 namespace MichaelNabil230\MultiTenancy;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use MichaelNabil230\MultiTenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use MichaelNabil230\MultiTenancy\Models\Tenant;
 
 class Tenancy
 {
-    public Tenant|Model|null $tenant;
+    public Tenant|Model|null $tenant = null;
 
     public bool $initialized = false;
 
@@ -64,5 +65,41 @@ class Tenancy
         $this->initialized = false;
 
         $this->tenant = null;
+    }
+
+    /**
+     * Run a callback for multiple tenants.
+     * More performant than running $tenant->run() one by one.
+     *
+     * @param  \MichaelNabil230\MultiTenancy\Models\Tenant[]|\Traversable|string[]|null  $tenants
+     * @param  callable  $callback
+     * @return void
+     */
+    public function runForMultiple($tenants, callable $callback)
+    {
+        // Convert null to all tenants
+        $tenants = is_null($tenants) ? Tenant::cursor() : $tenants;
+
+        $tenants = Arr::wrap($tenants);
+
+        // Use all tenants if $tenants are falsely
+        $tenants = $tenants ?: Tenant::cursor();
+
+        $originalTenant = $this->tenant;
+
+        foreach ($tenants as $tenant) {
+            if (! $tenant instanceof Tenant) {
+                $tenant = Tenant::find($tenant);
+            }
+
+            $this->initialize($tenant);
+            $callback($tenant);
+        }
+
+        if ($originalTenant) {
+            $this->initialize($originalTenant);
+        } else {
+            $this->end();
+        }
     }
 }

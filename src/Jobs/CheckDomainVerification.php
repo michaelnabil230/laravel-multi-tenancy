@@ -32,7 +32,7 @@ class CheckDomainVerification implements ShouldQueue
     {
         $nameServer = config('multi-tenancy.name_server');
 
-        if (empty($nameServer)) {
+        if (is_null($nameServer)) {
             return;
         }
 

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 return new class extends Migration
 {
@@ -15,15 +16,20 @@ return new class extends Migration
     {
         Schema::create('tenants', function (Blueprint $table) {
             $table->uuid('id')->primary();
+
+            if (MultiTenancy::subscriptionEnable()) {
+                $table->timestamp('trial_ends_at')->nullable();
+            }
+
             $table->json('data')->nullable();
-            $table->foreignIdFor(config('multi-tenancy.owner_model', \App\Models\User::class), 'owner_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(MultiTenancy::ownerModel(), 'owner_id')->nullable()->constrained(MultiTenancy::owner()->getTable())->cascadeOnDelete();
             $table->timestamps();
         });
 
         Schema::create('domains', function (Blueprint $table) {
             $table->id();
             $table->string('domain')->unique();
-            $table->boolean('is_store')->default(false);
+            $table->boolean('is_premium')->default(false);
             $table->boolean('is_verified')->default(false);
             $table->foreignUuid('tenant_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
@@ -38,7 +44,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('tenants');
-
         Schema::dropIfExists('domains');
     }
 };

@@ -16,19 +16,13 @@ class TelescopeTags implements Feature
         }
 
         Telescope::tag(function (IncomingEntry $entry) use ($tenancy) {
-            $tags = [];
-
-            if (! request()->route()) {
-                return $tags;
+            if (! request()->route() || ! tenancy()->initialized) {
+                return [];
             }
 
-            if (tenancy()->initialized) {
-                $tags = [
-                    'tenant:'.$tenancy->tenant->getKey(),
-                ];
-            }
-
-            return $tags;
+            return [
+                'tenant:'.$tenancy->tenant->getKey(),
+            ];
         });
     }
 }

@@ -6,10 +6,7 @@ use MichaelNabil230\MultiTenancy\Tenancy;
 
 abstract class TenancyEvent
 {
-    public Tenancy $tenancy;
-
-    public function __construct(Tenancy $tenancy)
+    public function __construct(public Tenancy $tenancy)
     {
-        $this->tenancy = $tenancy;
     }
 }
