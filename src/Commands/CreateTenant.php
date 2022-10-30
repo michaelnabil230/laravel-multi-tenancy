@@ -112,7 +112,7 @@ class CreateTenant extends Command
      *
      * @return \MichaelNabil230\MultiTenancy\Models\Plan
      */
-    public function getPlanSelected(): Plan
+    public function getPlanSelected(): ?Plan
     {
         $slug = $this->components->choice(
             'Choose a plan from the list.',
@@ -228,9 +228,7 @@ class CreateTenant extends Command
     /**
      * Get all domains by name.
      *
-     * @param  string  $email
-     * @param  string  $password
-     * @param  Collection  $domains
+     * @param  string  $name
      * @return array<int, string>
      */
     protected function getDomains(string $name): array

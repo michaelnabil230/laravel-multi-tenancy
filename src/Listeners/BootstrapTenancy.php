@@ -2,16 +2,18 @@
 
 namespace MichaelNabil230\MultiTenancy\Listeners;
 
-use MichaelNabil230\MultiTenancy\Events;
+use MichaelNabil230\MultiTenancy\Events\Tenancy;
 
 class BootstrapTenancy
 {
-    public function handle(Events\TenancyInitialized $event)
+    public function handle(Tenancy\TenancyInitialized $event)
     {
-        event(new Events\BootstrappingTenancy($event->tenancy));
+        event(new Tenancy\BootstrappingTenancy($event->tenancy));
 
-        // Handel any think
+        foreach ($event->tenancy->getBootstrappers() as $bootstrapper) {
+            $bootstrapper->bootstrap($event->tenancy->tenant);
+        }
 
-        event(new Events\TenancyBootstrapped($event->tenancy));
+        event(new Tenancy\TenancyBootstrapped($event->tenancy));
     }
 }

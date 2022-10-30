@@ -41,22 +41,7 @@ parameters:
 			path: src/Commands/CreateTenant.php
 
 		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$domains$#"
-			count: 1
-			path: src/Commands/CreateTenant.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$email$#"
-			count: 1
-			path: src/Commands/CreateTenant.php
-
-		-
-			message: "#^PHPDoc tag @param references unknown parameter\\: \\$password$#"
-			count: 1
-			path: src/Commands/CreateTenant.php
-
-		-
-			message: "#^PHPDoc tag @return with type void is incompatible with native type array\\.$#"
+			message: "#^Method MichaelNabil230\\\\MultiTenancy\\\\Commands\\\\CreateTenant\\:\\:getPlanSelected\\(\\) should return MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\|null but returns Illuminate\\\\Database\\\\Eloquent\\\\Model\\|null\\.$#"
 			count: 1
 			path: src/Commands/CreateTenant.php
 

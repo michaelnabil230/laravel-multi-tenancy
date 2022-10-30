@@ -40,7 +40,7 @@ class Seed extends SeedCommand
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
     public function handle()
     {
@@ -51,7 +51,7 @@ class Seed extends SeedCommand
         }
 
         if (! $this->confirmToProceed()) {
-            return;
+            return 1;
         }
 
         $this->components->info('Running seed tenants');
@@ -61,10 +61,14 @@ class Seed extends SeedCommand
                 event(new DataBase\SeedingDatabase($tenant));
 
                 // Seed
-                parent::handle();
+                $result = parent::handle();
 
                 event(new DataBase\DatabaseSeeded($tenant));
+
+                return $result;
             });
         });
+
+        return 0;
     }
 }

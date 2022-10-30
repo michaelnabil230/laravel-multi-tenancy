@@ -72,14 +72,19 @@ return [
         Events\Domain\DomainDeleted::class => [],
 
         // Tenancy events
-        Events\InitializingTenancy::class => [],
-        Events\TenancyInitialized::class => [
+        Events\Tenancy\InitializingTenancy::class => [],
+        Events\Tenancy\TenancyInitialized::class => [
             Listeners\BootstrapTenancy::class,
         ],
-        Events\EndingTenancy::class => [],
-        Events\TenancyEnded::class => [],
-        Events\BootstrappingTenancy::class => [],
-        Events\TenancyBootstrapped::class => [],
+        Events\Tenancy\EndingTenancy::class => [],
+        Events\Tenancy\TenancyEnded::class => [
+            Listeners\RevertToCentralContext::class,
+        ],
+
+        Events\Tenancy\BootstrappingTenancy::class => [],
+        Events\Tenancy\TenancyBootstrapped::class => [],
+        Events\RevertingToCentralContext::class => [],
+        Events\RevertedToCentralContext::class => [],
     ],
 
     /**
@@ -180,7 +185,6 @@ return [
      */
     'features' => [
         // MichaelNabil230\MultiTenancy\Features\TelescopeTags::class,
-        // MichaelNabil230\MultiTenancy\Features\TenantConfig::class,
         // MichaelNabil230\MultiTenancy\Features\TenantSetting::class,
     ],
 

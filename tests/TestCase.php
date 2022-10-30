@@ -3,7 +3,9 @@
 namespace MichaelNabil230\MultiTenancy\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 use MichaelNabil230\MultiTenancy\MultiTenancyServiceProvider;
+use MichaelNabil230\MultiTenancy\Tests\Etc\User;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -28,7 +30,12 @@ class TestCase extends Orchestra
     {
         config()->set('database.default', 'testing');
 
-        $migration = include __DIR__.'/../database/migrations/create_laravel-multi-tenancy_table.php.stub';
+        MultiTenancy::useOwnerModel(User::class);
+
+        $migration = include __DIR__.'/../database/migrations/create_multi_tenancy_table.php.stub';
+        $migration->up();
+
+        $migration = include __DIR__.'/../database/migrations/create_subscription_table.php.stub';
         $migration->up();
     }
 }
