@@ -76,7 +76,7 @@ class Tenancy
     public function getBootstrappers(): array
     {
         // If no callback for getting bootstrappers is set, we just return all of them.
-        $resolve = config('multi-tenancy.bootstrappers',[]);
+        $resolve = config('multi-tenancy.bootstrappers', []);
 
         // Here We instantiate the bootstrappers and return them.
         return array_map('app', $resolve);
