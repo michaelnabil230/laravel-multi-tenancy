@@ -26,7 +26,7 @@ trait BelongsToTenant
 
         static::creating(function ($model) {
             if (! $model->getAttribute('tenant_id') && ! $model->relationLoaded('tenant')) {
-                if (tenancy()->initialized) {
+                if (MultiTenancy::checkCurrent()) {
                     $model->setAttribute('tenant_id', tenant()->getTenantKey());
                     $model->setRelation('tenant', tenant());
                 }

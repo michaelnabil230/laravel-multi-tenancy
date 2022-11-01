@@ -1,11 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Call to an undefined method Illuminate\\\\Routing\\\\UrlGenerator\\:\\:setAssetRoot\\(\\)\\.$#"
-			count: 2
-			path: src/Bootstrappers/FilesystemTenancyBootstrapper.php
-
-		-
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$description\\.$#"
 			count: 1
 			path: src/Commands/CreateTenant.php
@@ -51,11 +46,6 @@ parameters:
 			path: src/Features/TelescopeTags.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:\\$id\\.$#"
-			count: 1
-			path: src/Features/TenantSetting.php
-
-		-
 			message: "#^Access to static property \\$cacheKey on an unknown class MichaelNabil230\\\\Setting\\\\Stores\\\\DatabaseSettingStore\\.$#"
 			count: 2
 			path: src/Features/TenantSetting.php
@@ -64,11 +54,6 @@ parameters:
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$domain\\.$#"
 			count: 1
 			path: src/Jobs/CheckDomainVerification.php
-
-		-
-			message: "#^Access to an undefined property Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:\\$tenant\\.$#"
-			count: 1
-			path: src/Middleware/InitializeTenancyByTenantUser.php
 
 		-
 			message: "#^Negated boolean expression is always false\\.$#"
@@ -214,3 +199,8 @@ parameters:
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Plan\\:\\:\\$trial_period\\.$#"
 			count: 1
 			path: src/SubscriptionBuilder.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Foundation\\\\Auth\\\\User\\:\\:\\$tenant\\.$#"
+			count: 1
+			path: src/TenantFinder/TenantFinderByUser.php

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use MichaelNabil230\MultiTenancy\Events\Tenant as EventsTenant;
+use MichaelNabil230\MultiTenancy\Events;
 use MichaelNabil230\MultiTenancy\MultiTenancy;
 use MichaelNabil230\MultiTenancy\Traits\HasSubscriptions;
 use MichaelNabil230\MultiTenancy\Traits\HasValidationRules;
@@ -45,14 +45,14 @@ class Tenant extends Model
      * @var array<string, string>
      */
     protected $dispatchesEvents = [
-        'saving' => EventsTenant\SavingTenant::class,
-        'saved' => EventsTenant\TenantSaved::class,
-        'creating' => EventsTenant\CreatingTenant::class,
-        'created' => EventsTenant\TenantCreated::class,
-        'updating' => EventsTenant\UpdatingTenant::class,
-        'updated' => EventsTenant\TenantUpdated::class,
-        'deleting' => EventsTenant\DeletingTenant::class,
-        'deleted' => EventsTenant\TenantDeleted::class,
+        'saving' => Events\Tenant\SavingTenant::class,
+        'saved' => Events\Tenant\TenantSaved::class,
+        'creating' => Events\Tenant\CreatingTenant::class,
+        'created' => Events\Tenant\TenantCreated::class,
+        'updating' => Events\Tenant\UpdatingTenant::class,
+        'updated' => Events\Tenant\TenantUpdated::class,
+        'deleting' => Events\Tenant\DeletingTenant::class,
+        'deleted' => Events\Tenant\TenantDeleted::class,
     ];
 
     /**
@@ -73,5 +73,56 @@ class Tenant extends Model
     public function owner(): BelongsTo
     {
         return $this->belongsTo(MultiTenancy::ownerModel(), 'owner_id');
+    }
+
+    /**
+     * Initializes the tenant.
+     *
+     * @return static
+     */
+    public function initialize(): static
+    {
+        event(new Events\Tenancy\InitializingTenancy($this));
+
+        if ($this->isCurrent()) {
+            return $this;
+        }
+
+        // MultiTenancy::forgetCurrent();
+
+        MultiTenancy::bindAsCurrentTenant($this);
+
+        event(new Events\Tenancy\TenancyInitialized($this));
+
+        return $this;
+    }
+
+    public function isCurrent(): bool
+    {
+        return MultiTenancy::current()?->getKey() === $this->getKey();
+    }
+
+    public function forget(): static
+    {
+        event(new Events\Tenancy\EndingTenancy($this));
+
+        app()->forgetInstance(MultiTenancy::$containerKey);
+
+        event(new Events\Tenancy\TenancyEnded($this));
+
+        return $this;
+    }
+
+    public function execute(callable $callable)
+    {
+        $originalCurrentTenant = MultiTenancy::current();
+
+        $this->initialize();
+
+        return tap($callable($this), static function () use ($originalCurrentTenant) {
+            $originalCurrentTenant
+                ? $originalCurrentTenant->initialize()
+                : MultiTenancy::forgetCurrent();
+        });
     }
 }

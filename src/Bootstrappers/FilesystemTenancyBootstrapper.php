@@ -17,7 +17,7 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
         $this->originalPaths = [
             'disks' => [],
             'storage' => $this->app->storagePath(),
-            'asset_url' => $this->app['config']['app.asset_url'],
+            'asset_url' => config('app.asset_url'),
         ];
 
         $this->app['url']->macro('setAssetRoot', function ($assetRoot) {
@@ -27,34 +27,34 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
 
     public function bootstrap(Tenant $tenant)
     {
-        $suffix = $this->app['config']['multi-tenancy.filesystem.suffix_base'].$tenant->getKey();
+        $suffix = config('multi-tenancy.filesystem.suffix_base').$tenant->getKey();
 
         // storage_path()
-        if ($this->app['config']['multi-tenancy.filesystem.suffix_storage_path'] ?? true) {
+        if (config('multi-tenancy.filesystem.suffix_storage_path') ?? true) {
             $this->app->useStoragePath($this->originalPaths['storage']."/{$suffix}");
         }
 
         // asset()
-        if ($this->app['config']['multi-tenancy.filesystem.asset_helper_tenancy'] ?? true) {
+        if (config('multi-tenancy.filesystem.asset_helper_tenancy') ?? true) {
             if ($this->originalPaths['asset_url']) {
-                $this->app['config']['app.asset_url'] = $this->originalPaths['asset_url']."/$suffix";
-                $this->app['url']->setAssetRoot($this->app['config']['app.asset_url']);
+                config()->set('app.asset_url', $this->originalPaths['asset_url']."/$suffix");
+                $this->app['url']->setAssetRoot(config('app.asset_url'));
             } else {
-                $this->app['url']->setAssetRoot($this->app['url']->route('stancl.tenancy.asset', ['path' => '']));
+                // $this->app['url']->setAssetRoot($this->app['url']->route('multi-tenancy.asset', ['path' => '']));
             }
         }
 
         // Storage facade
-        Storage::forgetDisk($this->app['config']['multi-tenancy.filesystem.disks']);
+        Storage::forgetDisk(config('multi-tenancy.filesystem.disks', []));
 
-        foreach ($this->app['config']['multi-tenancy.filesystem.disks'] as $disk) {
-            $originalRoot = $this->app['config']["filesystems.disks.{$disk}.root"];
+        foreach (config('multi-tenancy.filesystem.disks', []) as $disk) {
+            $originalRoot = config("filesystems.disks.{$disk}.root");
             $this->originalPaths['disks'][$disk] = $originalRoot;
 
             $finalPrefix = str_replace(
                 ['%storage_path%', '%tenant%'],
                 [storage_path(), $tenant->getKey()],
-                $this->app['config']["tenancy.filesystem.root_override.{$disk}"] ?? '',
+                config("multi-tenancy.filesystem.root_override.{$disk}", ''),
             );
 
             if (! $finalPrefix) {
@@ -63,7 +63,7 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
                     : $suffix;
             }
 
-            $this->app['config']["filesystems.disks.{$disk}.root"] = $finalPrefix;
+            config()->set("filesystems.disks.{$disk}.root", $finalPrefix);
         }
     }
 
@@ -73,13 +73,13 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
         $this->app->useStoragePath($this->originalPaths['storage']);
 
         // asset()
-        $this->app['config']['app.asset_url'] = $this->originalPaths['asset_url'];
-        $this->app['url']->setAssetRoot($this->app['config']['app.asset_url']);
+        config()->set('app.asset_url', $this->originalPaths['asset_url']);
+        $this->app['url']->setAssetRoot(config('app.asset_url'));
 
         // Storage facade
-        Storage::forgetDisk($this->app['config']['multi-tenancy.filesystem.disks']);
-        foreach ($this->app['config']['multi-tenancy.filesystem.disks'] as $disk) {
-            $this->app['config']["filesystems.disks.{$disk}.root"] = $this->originalPaths['disks'][$disk];
+        Storage::forgetDisk(config('multi-tenancy.filesystem.disks', []));
+        foreach (config('multi-tenancy.filesystem.disks', []) as $disk) {
+            config()->set("filesystems.disks.{$disk}.root", $this->originalPaths['disks'][$disk]);
         }
     }
 }

@@ -5,23 +5,23 @@ namespace MichaelNabil230\MultiTenancy\Features;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use MichaelNabil230\MultiTenancy\Features\Contracts\Feature;
-use MichaelNabil230\MultiTenancy\Tenancy;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 class TelescopeTags implements Feature
 {
-    public function bootstrap(Tenancy $tenancy): void
+    public function bootstrap(): void
     {
         if (! class_exists(Telescope::class)) {
             return;
         }
 
-        Telescope::tag(function (IncomingEntry $entry) use ($tenancy) {
-            if (! request()->route() || ! tenancy()->initialized) {
+        Telescope::tag(function (IncomingEntry $entry) {
+            if (! request()->route() || ! MultiTenancy::checkCurrent()) {
                 return [];
             }
 
             return [
-                'tenant:'.$tenancy->tenant->getKey(),
+                'tenant:'.MultiTenancy::current()?->getKey(),
             ];
         });
     }

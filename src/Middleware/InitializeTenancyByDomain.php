@@ -3,22 +3,21 @@
 namespace MichaelNabil230\MultiTenancy\Middleware;
 
 use Closure;
+use MichaelNabil230\MultiTenancy\TenantFinder\TenantFinderByDomain;
 
-class InitializeTenancyByDomain extends IdentificationMiddleware
+class InitializeTenancyByDomain
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle($request, Closure $next)
     {
-        return $this->initializeTenancy(
-            $request,
-            $next,
-            $request->getHost()
-        );
+        TenantFinderByDomain::findOrFail($request);
+
+        return $next($request);
     }
 }

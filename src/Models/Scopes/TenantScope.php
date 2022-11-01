@@ -5,6 +5,7 @@ namespace MichaelNabil230\MultiTenancy\Models\Scopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 class TenantScope implements Scope
 {
@@ -17,7 +18,7 @@ class TenantScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        if (! tenancy()->initialized) {
+        if (! MultiTenancy::checkCurrent()) {
             return;
         }
 

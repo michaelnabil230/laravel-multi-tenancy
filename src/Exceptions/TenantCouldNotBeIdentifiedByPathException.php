@@ -8,9 +8,9 @@ use Facade\IgnitionContracts\Solution;
 
 class TenantCouldNotBeIdentifiedByPathException extends TenantCouldNotBeIdentifiedException implements ProvidesSolution
 {
-    public function __construct($tenant_id)
+    public function __construct($tenantId)
     {
-        parent::__construct("Tenant could not be identified on path with tenant_id: $tenant_id");
+        parent::__construct("Tenant could not be identified on path with tenant_id: $tenantId");
     }
 
     public function getSolution(): Solution

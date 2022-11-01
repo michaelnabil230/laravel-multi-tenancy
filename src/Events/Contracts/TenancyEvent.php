@@ -2,11 +2,11 @@
 
 namespace MichaelNabil230\MultiTenancy\Events\Contracts;
 
-use MichaelNabil230\MultiTenancy\Tenancy;
+use MichaelNabil230\MultiTenancy\Models\Tenant;
 
 abstract class TenancyEvent
 {
-    public function __construct(public Tenancy $tenancy)
+    public function __construct(public Tenant $tenant)
     {
     }
 }

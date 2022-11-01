@@ -20,7 +20,7 @@ class RedisTenancyBootstrapper implements TenancyBootstrapper
     public function bootstrap(Tenant $tenant)
     {
         foreach ($this->prefixedConnections() as $connection) {
-            $prefix = $this->config['multi-tenancy.redis.prefix_base'].$tenant->getKey();
+            $prefix = config('multi-tenancy.redis.prefix_base').$tenant->getKey();
             $client = Redis::connection($connection)->client();
 
             $this->originalPrefixes[$connection] = $client->getOption($client::OPT_PREFIX);
@@ -41,6 +41,6 @@ class RedisTenancyBootstrapper implements TenancyBootstrapper
 
     protected function prefixedConnections()
     {
-        return $this->config['multi-tenancy.redis.prefixed_connections'];
+        return config('multi-tenancy.redis.prefixed_connections');
     }
 }

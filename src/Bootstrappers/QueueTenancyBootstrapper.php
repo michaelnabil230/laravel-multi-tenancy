@@ -13,6 +13,7 @@ use Illuminate\Queue\QueueManager;
 use Illuminate\Support\Testing\Fakes\QueueFake;
 use MichaelNabil230\MultiTenancy\Bootstrappers\Contracts\TenancyBootstrapper;
 use MichaelNabil230\MultiTenancy\Models\Tenant;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 class QueueTenancyBootstrapper implements TenancyBootstrapper
 {
@@ -56,14 +57,11 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
             static::initializeTenancyForQueue($event->job->payload()['tenant_id'] ?? null);
         });
 
-        if (version_compare(app()->version(), '8.64', '>=')) {
-            // JobRetryRequested only exists since Laravel 8.64
-            $dispatcher->listen(JobRetryRequested::class, function ($event) use (&$previousTenant) {
-                $previousTenant = tenant();
+        $dispatcher->listen(JobRetryRequested::class, function ($event) use (&$previousTenant) {
+            $previousTenant = tenant();
 
-                static::initializeTenancyForQueue($event->payload()['tenant_id'] ?? null);
-            });
-        }
+            static::initializeTenancyForQueue($event->payload()['tenant_id'] ?? null);
+        });
 
         // If we're running tests, we make sure to clean up after any artisan('queue:work') calls
         $revertToPreviousState = function ($event) use (&$previousTenant, $runningTests) {
@@ -80,9 +78,9 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
     {
         if (! $tenantId) {
             // The job is not tenant-aware
-            if (tenancy()->initialized) {
+            if (MultiTenancy::checkCurrent()) {
                 // Tenancy was initialized, so we revert back to the central context
-                tenancy()->end();
+                MultiTenancy::forgetCurrent();
             }
 
             return;
@@ -90,17 +88,16 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
 
         if (static::$forceRefresh) {
             // Re-initialize tenancy between all jobs
-            if (tenancy()->initialized) {
-                tenancy()->end();
+            if (MultiTenancy::checkCurrent()) {
+                MultiTenancy::forgetCurrent();
             }
 
-            $tenant = Tenant::find($tenantId);
-            tenancy()->initialize($tenant);
+            Tenant::find($tenantId)->initialize();
 
             return;
         }
 
-        if (tenancy()->initialized) {
+        if (MultiTenancy::checkCurrent()) {
             // Tenancy is already initialized
             if (tenant()->getKey() === $tenantId) {
                 // It's initialized for the same tenant (e.g. dispatchNow was used, or the previous job also ran for this tenant)
@@ -110,8 +107,7 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
 
         // Tenancy was either not initialized, or initialized for a different tenant.
         // Therefore, we initialize it for the correct tenant.
-        $tenant = Tenant::find($tenantId);
-        tenancy()->initialize($tenant);
+        Tenant::find($tenantId)->initialize();
     }
 
     protected static function revertToPreviousState($event, &$previousTenant)
@@ -125,12 +121,12 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
 
         // Revert back to the previous tenant
         if (tenant() && $previousTenant && $previousTenant->isNot(tenant())) {
-            tenancy()->initialize($previousTenant);
+            $previousTenant->initialize();
         }
 
         // End tenancy
         if (tenant() && (! $previousTenant)) {
-            tenancy()->end();
+            MultiTenancy::forgetCurrent();
         }
     }
 
@@ -157,7 +153,7 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
 
     public function getPayload(string $connection)
     {
-        if (! tenancy()->initialized) {
+        if (! MultiTenancy::checkCurrent()) {
             return [];
         }
 

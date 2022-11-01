@@ -20,6 +20,13 @@ return [
         'localhost',
     ],
 
+    /*
+     * These fields are used by tenant:artisan command to match one or more tenant
+     */
+    'artisan_search_fields' => [
+        'id',
+    ],
+
     /**
      * All events for tenancy
      */
@@ -96,15 +103,8 @@ return [
      *
      * This works for all Cache facade calls, cache() helper
      * calls and direct calls to injected cache stores.
-     *
-     * Each key in the cache will have a tag applied to it. This tag is used to
-     * scope the cache both when writing to it and when reading from it.
-     *
-     * You can clear the cache selectively by specifying the tag.
      */
-    'cache' => [
-        'tag_base' => 'tenant', // This tag_base, followed by the tenant_id, will form a tag that will be applied on each cache call.
-    ],
+    'cache_prefix_key' => 'tenant_id_',
 
     /**
      * Filesystem tenancy config. Used by FilesystemTenancyBootstrapper.

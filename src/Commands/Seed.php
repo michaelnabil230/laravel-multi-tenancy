@@ -2,16 +2,16 @@
 
 namespace MichaelNabil230\MultiTenancy\Commands;
 
-use Illuminate\Database\ConnectionResolverInterface;
-use Illuminate\Database\Console\Seeds\SeedCommand;
-use MichaelNabil230\MultiTenancy\Commands\Concerns\HasATenantsOption;
+use Illuminate\Console\Command;
+use MichaelNabil230\MultiTenancy\Commands\Concerns\TenantAware;
 use MichaelNabil230\MultiTenancy\Events\DataBase;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'tenants:seed', description: 'Seed tenant database(s).')]
-class Seed extends SeedCommand
+#[AsCommand(name: 'tenants:seed', description: 'Seed tenant in database.')]
+class Seed extends Command
 {
-    use HasATenantsOption;
+    use TenantAware;
 
     /**
      * The console command name.
@@ -25,17 +25,7 @@ class Seed extends SeedCommand
      *
      * @var string
      */
-    protected $description = 'Seed tenant database(s).';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct(ConnectionResolverInterface $resolver)
-    {
-        parent::__construct($resolver);
-    }
+    protected $description = 'Seed tenant in database.';
 
     /**
      * Execute the console command.
@@ -44,29 +34,27 @@ class Seed extends SeedCommand
      */
     public function handle()
     {
-        foreach (config('multi-tenancy.seeder_parameters') as $parameter => $value) {
-            if (! $this->input->hasParameterOption($parameter)) {
-                $this->input->setOption(ltrim($parameter, '-'), $value);
-            }
-        }
+        $arguments = config('multi-tenancy.seeder_parameters');
 
-        if (! $this->confirmToProceed()) {
+        if (is_null($arguments)) {
+            $this->components->error('Please fill the seeder in the config file');
+
             return 1;
         }
 
-        $this->components->info('Running seed tenants');
+        $this->components->info('Running seed for tenants');
 
-        tenancy()->runForMultiple($this->option('tenants'), function ($tenant) {
-            $this->components->task($tenant->getKey(), function () use ($tenant) {
-                event(new DataBase\SeedingDatabase($tenant));
+        $tenant = MultiTenancy::current();
 
-                // Seed
-                $result = parent::handle();
+        $this->components->task('Tenant: '.$tenant->getKey(), function () use ($tenant, $arguments) {
+            event(new DataBase\SeedingDatabase($tenant));
 
-                event(new DataBase\DatabaseSeeded($tenant));
+            // Seed
+            $result = $this->callSilent('db:seed', $arguments);
 
-                return $result;
-            });
+            event(new DataBase\DatabaseSeeded($tenant));
+
+            return $result;
         });
 
         return 0;

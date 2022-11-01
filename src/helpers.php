@@ -1,19 +1,6 @@
 <?php
 
-use MichaelNabil230\MultiTenancy\Models\Tenant;
-use MichaelNabil230\MultiTenancy\Tenancy;
-
-if (! function_exists('tenancy')) {
-    /**
-     * Get the current tenancy storage.
-     *
-     * @return \MichaelNabil230\MultiTenancy\Tenancy
-     */
-    function tenancy(): Tenancy
-    {
-        return app(Tenancy::class);
-    }
-}
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 if (! function_exists('tenant')) {
     /**
@@ -24,14 +11,10 @@ if (! function_exists('tenant')) {
      */
     function tenant($key = null)
     {
-        if (! app()->bound(Tenant::class)) {
-            return;
-        }
-
         if (is_null($key)) {
-            return app(Tenant::class);
+            return MultiTenancy::current();
         }
 
-        return optional(app(Tenant::class))->getAttribute($key) ?? null;
+        return MultiTenancy::current()?->getAttribute($key) ?? null;
     }
 }

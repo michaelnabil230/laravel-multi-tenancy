@@ -4,24 +4,21 @@ namespace MichaelNabil230\MultiTenancy\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 class PreventAccessFromCentralDomains
 {
     /**
-     * Set this property if you want to customize the on-fail behavior.
+     * Handle an incoming request.
      *
-     * @var callable|null
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public static $onFail = null;
-
     public function handle(Request $request, Closure $next)
     {
         if (in_array($request->getHost(), config('multi-tenancy.central_domains'))) {
-            $onFail = static::$onFail ?? function ($request, $next) {
-                abort(404);
-            };
-
-            return $onFail($request, $next);
+            return MultiTenancy::onFail(abort(404), $request);
         }
 
         return $next($request);

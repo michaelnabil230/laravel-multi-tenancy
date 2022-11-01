@@ -4,15 +4,10 @@ namespace MichaelNabil230\MultiTenancy\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use MichaelNabil230\MultiTenancy\TenantFinder\TenantFinderByRequest;
 
-class InitializeTenancyByRequestData extends IdentificationMiddleware
+class InitializeTenancyByRequestData
 {
-    /** @var string|null */
-    public static $header = 'X-Tenant';
-
-    /** @var string|null */
-    public static $queryParameter = 'tenant';
-
     /**
      * Handle an incoming request.
      *
@@ -22,22 +17,8 @@ class InitializeTenancyByRequestData extends IdentificationMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($request->method() !== 'OPTIONS') {
-            return $this->initializeTenancy($request, $next, $this->getPayload($request));
-        }
+        TenantFinderByRequest::findOrFail($request);
 
         return $next($request);
-    }
-
-    private function getPayload(Request $request): ?string
-    {
-        $tenant = null;
-        if (static::$header && $request->hasHeader(static::$header)) {
-            $tenant = $request->header(static::$header);
-        } elseif (static::$queryParameter && $request->has(static::$queryParameter)) {
-            $tenant = $request->get(static::$queryParameter);
-        }
-
-        return $tenant;
     }
 }

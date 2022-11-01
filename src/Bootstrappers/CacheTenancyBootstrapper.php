@@ -2,46 +2,57 @@
 
 namespace MichaelNabil230\MultiTenancy\Bootstrappers;
 
-use Illuminate\Cache\CacheManager;
+use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Cache;
 use MichaelNabil230\MultiTenancy\Bootstrappers\Contracts\TenancyBootstrapper;
-use MichaelNabil230\MultiTenancy\CacheManager as TenantCacheManager;
 use MichaelNabil230\MultiTenancy\Models\Tenant;
 
 class CacheTenancyBootstrapper implements TenancyBootstrapper
 {
-    protected CacheManager|null $originalCache;
+    protected ?string $originalPrefix;
+
+    protected string $storeName;
+
+    protected string $cacheKeyBase;
 
     public function __construct(
         protected Application $app,
     ) {
+        $this->originalPrefix = config('cache.prefix');
+
+        $this->storeName = config('cache.default');
+
+        $this->cacheKeyBase = config('multi-tenancy.cache_prefix_key', 'tenant_id_');
     }
 
-    public function bootstrap(Tenant $tenant)
+    public function bootstrap(Tenant $tenant): void
     {
-        $this->resetFacadeCache();
-
-        $this->originalCache = $this->originalCache ?? $this->app['cache'];
-        $this->app->extend('cache', fn () => new TenantCacheManager($this->app));
+        $this->setCachePrefix($this->cacheKeyBase.$tenant->getKey());
     }
 
-    public function revert()
+    public function revert(): void
     {
-        $this->resetFacadeCache();
-
-        $this->app->extend('cache', fn () => $this->originalCache);
-
-        $this->originalCache = null;
+        $this->setCachePrefix($this->originalPrefix);
     }
 
-    /**
-     * This wouldn't be necessary, but is needed when a call to the
-     * facade has been made prior to bootstrapping tenancy. The
-     * facade has its own cache, separate from the container.
-     */
-    public function resetFacadeCache()
+    protected function setCachePrefix(string $prefix)
     {
+        config()->set('cache.prefix', $prefix);
+
+        app('cache')->forgetDriver($this->storeName);
+
+        // This is important because the `CacheManager` will have the `$app['config']` array cached
+        // with old prefixes on the `cache` instance. Simply calling `forgetDriver` only removes
+        // the `$store` but doesn't update the `$app['config']`.
+        app()->forgetInstance('cache');
+
+        //This is important because the Cache Repository is using an old version of the CacheManager
+        app()->forgetInstance('cache.store');
+
+        // Forget the cache repository in the container
+        app()->forgetInstance(Repository::class);
+
         Cache::clearResolvedInstances();
     }
 }

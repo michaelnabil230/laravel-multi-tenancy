@@ -4,7 +4,6 @@ namespace MichaelNabil230\MultiTenancy;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Event;
-use MichaelNabil230\MultiTenancy\Models\Tenant;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -22,32 +21,28 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
             ->hasCommands([
                 Commands\CreateTenant::class,
                 Commands\Seed::class,
+                Commands\TenantsArtisanCommand::class,
             ]);
-    }
-
-    public function bootingPackage()
-    {
-        $this->registerPublishing();
-        $this->addTenantBlueprintMacro();
     }
 
     public function registeringPackage()
     {
-        // Make sure Tenancy is stateful.
-        $this->app->singleton(Tenancy::class);
+        $this
+            ->registerBootstrappers()
+            ->registerFeatures()
+            ->registerTenancyEvents()
+            ->registerSubscriptionEvents();
+    }
 
-        // Make sure features are bootstrapped as soon as Tenancy is instantiated.
-        $this->app->extend(Tenancy::class, function (Tenancy $tenancy) {
-            foreach (config('multi-tenancy.features') ?? [] as $feature) {
-                $this->app[$feature]->bootstrap($tenancy);
-            }
+    public function bootingPackage()
+    {
+        $this
+            ->registerPublishing()
+            ->addTenantBlueprintMacro();
+    }
 
-            return $tenancy;
-        });
-
-        // Make it possible to inject the current tenant by trephining the Tenant contract.
-        $this->app->bind(Tenant::class, fn ($app) => $app[Tenancy::class]->tenant);
-
+    protected function registerBootstrappers()
+    {
         // Make sure bootstrappers are stateful (singletons).
         foreach (config('multi-tenancy.bootstrappers', []) as $bootstrapper) {
             if (method_exists($bootstrapper, '__constructStatic')) {
@@ -57,23 +52,33 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
             $this->app->singleton($bootstrapper);
         }
 
-        $this->registerTenancyEvents();
-        $this->registerSubscriptionEvents();
+        return $this;
     }
 
-    private function registerTenancyEvents()
+    protected function registerFeatures()
+    {
+        foreach (config('multi-tenancy.features', []) as $feature) {
+            $this->app[$feature]->bootstrap();
+        }
+
+        return $this;
+    }
+
+    protected function registerTenancyEvents()
     {
         foreach (config('multi-tenancy.events', []) as $event => $listeners) {
             foreach ($listeners as $listener) {
                 Event::listen($event, $listener);
             }
         }
+
+        return $this;
     }
 
-    private function registerSubscriptionEvents()
+    protected function registerSubscriptionEvents()
     {
         if (! MultiTenancy::subscriptionEnable()) {
-            return;
+            return $this;
         }
 
         foreach (config('multi-tenancy.subscription.events', []) as $event => $listeners) {
@@ -81,6 +86,8 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
                 Event::listen($event, $listener);
             }
         }
+
+        return $this;
     }
 
     private function registerPublishing()
@@ -95,14 +102,17 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
                 __DIR__.'/../resources/stubs/routes/api.php.stub' => base_path('routes/tenant/api.php'),
             ], "{$this->package->shortName()}-routes");
         }
+
+        return $this;
     }
 
     private function installCommand(InstallCommand $install): void
     {
         $install
             ->startWith(function ($self) {
-                $this->publishProvider($self);
-                $this->publishRoutes($self);
+                $this
+                    ->publishProvider($self)
+                    ->publishRoutes($self);
             })
             ->publishMigrations()
             ->askToRunMigrations()
@@ -118,18 +128,22 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
         $self->callSilently('vendor:publish', [
             '--tag' => "{$this->package->shortName()}-provider",
         ]);
+
+        return $this;
     }
 
-    private function publishRoutes($self)
+    protected function publishRoutes($self)
     {
         $self->comment('Publishing routes files...');
 
         $self->callSilently('vendor:publish', [
             '--tag' => "{$this->package->shortName()}-routes",
         ]);
+
+        return $this;
     }
 
-    private function addTenantBlueprintMacro()
+    protected function addTenantBlueprintMacro()
     {
         Blueprint::macro('tenant', function () {
             $this->foreignUuid('tenant_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
@@ -138,5 +152,7 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
         Blueprint::macro('dropTenant', function () {
             $this->dropConstrainedForeignId('tenant_id');
         });
+
+        return $this;
     }
 }

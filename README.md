@@ -45,6 +45,13 @@ return [
         'localhost',
     ],
 
+    /*
+     * These fields are used by tenant:artisan command to match one or more tenant
+     */
+    'artisan_search_fields' => [
+        'id',
+    ],
+
     /**
      * All events for tenancy
      */
@@ -121,15 +128,8 @@ return [
      *
      * This works for all Cache facade calls, cache() helper
      * calls and direct calls to injected cache stores.
-     *
-     * Each key in the cache will have a tag applied to it. This tag is used to
-     * scope the cache both when writing to it and when reading from it.
-     *
-     * You can clear the cache selectively by specifying the tag.
      */
-    'cache' => [
-        'tag_base' => 'tenant', // This tag_base, followed by the tenant_id, will form a tag that will be applied on each cache call.
-    ],
+    'cache_prefix_key' => 'tenant_id_',
 
     /**
      * Filesystem tenancy config. Used by FilesystemTenancyBootstrapper.
@@ -235,7 +235,7 @@ The package is highly configurable. This page covers what you can configure in t
 You can set static properties like this (example):
 
 ```php
-\MichaelNabil230\MultiTenancy\Middleware\InitializeTenancyByDomain::$onFail = function () {
+\MichaelNabil230\MultiTenancy\MultiTenancy::$onFail = function () {
     return redirect('https://my-central-domain.com/');
 };
 ```
@@ -336,7 +336,6 @@ $this->tenancy->initialize($tenant);
 - The `BootstrapTenancy` class catches the event and executes classes known as [tenancy bootstrappers].
 - The tenancy bootstrappers make changes to the application to make it "scoped" to the current tenant. This by default includes:
     - Switching the database connection
-    - Replacing `CacheManager` with a scoped cache manager
     - Suffixing filesystem paths
     - Making queues store the tenant id & initialize tenancy when being processed
 
@@ -555,6 +554,81 @@ The package can only provide scoping logic for the abstraction logic that Eloque
 
 Be careful with using them.
 
+### Making Artisan command tenant aware
+
+Commands can be made tenant aware by applying the `TenantAware` trait. When using the trait it is required to append `{--tenant=*}` or `{--tenant=}` to the command signature.
+
+Caution: If you append `{--tenant=*}`, then if no `tenant` option is provided when executing the command, the command will execute for *all* tenants.
+ 
+```php
+use Illuminate\Console\Command;
+use MichaelNabil230\MultiTenancy\Commands\Concerns\TenantAware;
+
+class YourFavoriteCommand extends Command
+{
+    use TenantAware;
+
+    protected $name = 'your-favorite-command';
+
+    public function handle()
+    {
+        return $this->line('The tenant is '. Tenant::current()->name);
+    }
+}
+```
+
+When executing the command, the `handle` method will be called for each tenant. 
+
+```bash
+php artisan your-favorite-command 
+```
+
+Using the example above, the name of each tenant will be written to the output of the command.
+
+
+You can also execute the command for a specific tenant:
+
+
+```bash
+php artisan your-favorite-command --tenant=1
+```
+
+## Using the tenants:artisan command
+
+If you cannot change an Artisan command yourself, for instance a command from Laravel itself or a command from a package, you can use `tenants:artisan <artisan command>`. This command will loop over tenants and for each of them make that tenant current, and execute the artisan command.
+
+### Passing arguments and options
+
+If you use quotes around the command part you can use any argument and option that the command supports.
+
+```bash
+php artisan tenants:artisan "send:email"
+```
+
+### Running artisan command for specific tenants
+
+If the command only needs to run for a specific tenant, you can pass its `id` to the `tenant` option.
+
+```bash
+php artisan tenants:artisan "send:email" --tenant=123
+```
+
+### Running artisan command for seed data to tenant
+
+Can it run a seed command to a specific tenant or for all tenants with the same previous section
+
+```bash
+php artisan tenants:seed --tenant=123
+```
+
+### Running artisan command for create a new tenant
+
+Can it run a create command to quickly create a tenant
+
+```bash
+php artisan create:tenant shop-1
+```
+
 ## Making global queries 
 
 To disable the tenant scope, simply add `withoutTenancy()` to your query.
@@ -586,7 +660,6 @@ $plan->features()->saveMany([
     new Feature(['name' => 'listing_title_bold'])
 ]);
 ```
-
 
 ### Getting all plans
 
