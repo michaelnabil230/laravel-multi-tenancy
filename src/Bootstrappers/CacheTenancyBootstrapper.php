@@ -16,9 +16,8 @@ class CacheTenancyBootstrapper implements TenancyBootstrapper
 
     protected string $cacheKeyBase;
 
-    public function __construct(
-        protected Application $app,
-    ) {
+    public function __construct(protected Application $app)
+    {
         $this->originalPrefix = config('cache.prefix');
 
         $this->storeName = config('cache.default');

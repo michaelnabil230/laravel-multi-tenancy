@@ -2,6 +2,8 @@
 
 namespace MichaelNabil230\MultiTenancy\ManagesModelOptions;
 
+use Illuminate\Contracts\Auth\Authenticatable;
+
 trait Owner
 {
     /**
@@ -9,7 +11,7 @@ trait Owner
      *
      * @var string
      */
-    public static $ownerModel = 'App\Models\User';
+    public static string $ownerModel = 'App\Models\User';
 
     /**
      * Set the owner model class name.
@@ -17,7 +19,7 @@ trait Owner
      * @param  string  $ownerModel
      * @return void
      */
-    public static function useOwnerModel($ownerModel)
+    public static function useOwnerModel(string $ownerModel): void
     {
         static::$ownerModel = $ownerModel;
     }
@@ -27,7 +29,7 @@ trait Owner
      *
      * @return string
      */
-    public static function ownerModel()
+    public static function ownerModel(): string
     {
         return static::$ownerModel;
     }
@@ -37,7 +39,7 @@ trait Owner
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable
      */
-    public static function owner()
+    public static function owner(): Authenticatable
     {
         return new static::$ownerModel;
     }

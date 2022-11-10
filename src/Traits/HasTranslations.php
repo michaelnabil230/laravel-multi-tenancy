@@ -19,6 +19,6 @@ trait HasTranslations
             $value, $operator, func_num_args() === 3
         );
 
-        return $query->where("{$column}->{$locale}", $operator, $value);
+        return $query->where("$column->$locale", $operator, $value);
     }
 }

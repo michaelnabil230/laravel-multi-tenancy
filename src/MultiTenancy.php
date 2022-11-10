@@ -2,6 +2,8 @@
 
 namespace MichaelNabil230\MultiTenancy;
 
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use MichaelNabil230\MultiTenancy\Bootstrappers\Contracts\TenancyBootstrapper;
 use MichaelNabil230\MultiTenancy\Exceptions\SubscriptionNotEnable;
@@ -62,7 +64,7 @@ class MultiTenancy
      * @param  \Illuminate\Http\Request  $request
      * @return callable
      */
-    public static function onFail($e, $request)
+    public static function onFail(Exception $e, Request $request)
     {
         $onFail = static::$onFail ?? function ($e, $request) {
             throw $e;
@@ -73,7 +75,6 @@ class MultiTenancy
 
     /**
      * Add the tenant in app container.
-
      *
      * @param  \MichaelNabil230\MultiTenancy\Models\Tenant  $tenant
      * @return \MichaelNabil230\MultiTenancy\Models\Tenant

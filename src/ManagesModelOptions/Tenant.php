@@ -2,6 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy\ManagesModelOptions;
 
+use Illuminate\Database\Eloquent\Model as BaseModel;
 use MichaelNabil230\MultiTenancy\Models\Tenant as Model;
 
 trait Tenant
@@ -11,7 +12,7 @@ trait Tenant
      *
      * @var string
      */
-    public static $tenantModel = Model::class;
+    public static string $tenantModel = Model::class;
 
     /**
      * Set the tenant model class name.
@@ -19,7 +20,7 @@ trait Tenant
      * @param  string  $tenantModel
      * @return void
      */
-    public static function useTenantModel($tenantModel)
+    public static function useTenantModel(string $tenantModel): void
     {
         static::$tenantModel = $tenantModel;
     }
@@ -29,7 +30,7 @@ trait Tenant
      *
      * @return string
      */
-    public static function tenantModel()
+    public static function tenantModel(): string
     {
         return static::$tenantModel;
     }
@@ -39,7 +40,7 @@ trait Tenant
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function tenant()
+    public static function tenant(): BaseModel
     {
         return new static::$tenantModel;
     }

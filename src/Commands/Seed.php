@@ -32,14 +32,14 @@ class Seed extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $arguments = config('multi-tenancy.seeder_parameters');
 
         if (is_null($arguments)) {
             $this->components->error('Please fill the seeder in the config file');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $this->components->info('Running seed for tenants');
@@ -57,6 +57,6 @@ class Seed extends Command
             return $result;
         });
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

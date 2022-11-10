@@ -2,6 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy\ManagesModelOptions;
 
+use Illuminate\Database\Eloquent\Model as BaseModel;
 use MichaelNabil230\MultiTenancy\Models\Domain as Model;
 
 trait Domain
@@ -11,7 +12,7 @@ trait Domain
      *
      * @var string
      */
-    public static $domainModel = Model::class;
+    public static string $domainModel = Model::class;
 
     /**
      * Set the domain model class name.
@@ -19,7 +20,7 @@ trait Domain
      * @param  string  $domainModel
      * @return void
      */
-    public static function useDomainModel($domainModel)
+    public static function useDomainModel(string $domainModel): void
     {
         static::$domainModel = $domainModel;
     }
@@ -29,7 +30,7 @@ trait Domain
      *
      * @return string
      */
-    public static function domainModel()
+    public static function domainModel(): string
     {
         return static::$domainModel;
     }
@@ -39,7 +40,7 @@ trait Domain
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function domain()
+    public static function domain(): BaseModel
     {
         return new static::$domainModel;
     }

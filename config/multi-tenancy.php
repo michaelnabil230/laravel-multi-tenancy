@@ -107,6 +107,11 @@ return [
     'cache_prefix_key' => 'tenant_id_',
 
     /**
+     * The session key Middleware in `ScopeSessions`
+     */
+    'session_key' => 'ensure_valid_tenant_session_tenant_id',
+
+    /**
      * Filesystem tenancy config. Used by FilesystemTenancyBootstrapper.
      */
     'filesystem' => [

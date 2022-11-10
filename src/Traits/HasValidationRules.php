@@ -15,7 +15,7 @@ trait HasValidationRules
      * @param  string  $column
      * @return \Illuminate\Validation\Rules\Unique
      */
-    public function unique($table, $column = 'NULL'): Unique
+    public function unique(string $table, string $column = 'NULL'): Unique
     {
         return Rule::unique($table, $column)->where('tenant_id', $this->getKey());
     }
@@ -27,7 +27,7 @@ trait HasValidationRules
      * @param  string  $column
      * @return \Illuminate\Validation\Rules\Exists
      */
-    public function exists($table, $column = 'NULL'): Exists
+    public function exists(string $table, string $column = 'NULL'): Exists
     {
         return Rule::exists($table, $column)->where('tenant_id', $this->getKey());
     }

@@ -17,10 +17,6 @@ use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 class QueueTenancyBootstrapper implements TenancyBootstrapper
 {
-    protected Repository $config;
-
-    protected QueueManager $queue;
-
     /**
      * Don't persist the same tenant across multiple jobs even if they have the same tenant ID.
      *
@@ -39,7 +35,7 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
         static::setUpJobListener($app->make(Dispatcher::class), $app->runningUnitTests());
     }
 
-    public function __construct(Repository $config, QueueManager $queue)
+    public function __construct(protected Repository $config, protected QueueManager $queue)
     {
         $this->config = $config;
         $this->queue = $queue;
@@ -47,7 +43,7 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
         $this->setUpPayloadGenerator();
     }
 
-    protected static function setUpJobListener($dispatcher, $runningTests)
+    protected static function setUpJobListener(Dispatcher $dispatcher, bool $runningTests): void
     {
         $previousTenant = null;
 
@@ -74,7 +70,7 @@ class QueueTenancyBootstrapper implements TenancyBootstrapper
         $dispatcher->listen(JobFailed::class, $revertToPreviousState); // artisan('queue:work') which fails
     }
 
-    protected static function initializeTenancyForQueue($tenantId)
+    protected static function initializeTenancyForQueue($tenantId): void
     {
         if (! $tenantId) {
             // The job is not tenant-aware

@@ -32,9 +32,9 @@ class CreateTenant extends Command
     /**
      * Execute the console command.
      *
-     * @return void
+     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $name = Str::camel($this->argument('name'));
 
@@ -43,13 +43,15 @@ class CreateTenant extends Command
         if (MultiTenancy::subscriptionEnable() && MultiTenancy::plan()::count() === 0) {
             $this->components->error('No Plans in the database.');
 
-            return;
+            return Command::FAILURE;
         }
 
         [$premiumDomain, $dashboardDomain, $apiDomain] = $this->getDomains($name);
 
         if ($this->ifDomainIsExists($premiumDomain, $dashboardDomain, $apiDomain)) {
-            return;
+            $this->components->error("Domain $premiumDomain already exists");
+
+            return Command::FAILURE;
         }
 
         /** @var \MichaelNabil230\MultiTenancy\Models\Tenant $tenant */
@@ -82,6 +84,8 @@ class CreateTenant extends Command
         $this->newLine();
 
         $this->components->info("Created tenant $name successfully.");
+
+        return Command::SUCCESS;
     }
 
     /**
@@ -99,10 +103,6 @@ class CreateTenant extends Command
             ->orWhere('domain', $dashboardDomain)
             ->orWhere('domain', $apiDomain)
             ->exists();
-
-        if ($isExists) {
-            $this->components->error("Domain $premiumDomain already exists");
-        }
 
         return $isExists;
     }

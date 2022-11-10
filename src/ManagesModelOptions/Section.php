@@ -2,6 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy\ManagesModelOptions;
 
+use Illuminate\Database\Eloquent\Model as BaseModel;
 use MichaelNabil230\MultiTenancy\Models\Section as Model;
 
 trait Section
@@ -11,7 +12,7 @@ trait Section
      *
      * @var string
      */
-    public static $sectionModel = Model::class;
+    public static string $sectionModel = Model::class;
 
     /**
      * Set the section model class name.
@@ -19,7 +20,7 @@ trait Section
      * @param  string  $sectionModel
      * @return void
      */
-    public static function useSectionModel($sectionModel)
+    public static function useSectionModel(string $sectionModel): void
     {
         static::$sectionModel = $sectionModel;
     }
@@ -29,7 +30,7 @@ trait Section
      *
      * @return string
      */
-    public static function sectionModel()
+    public static function sectionModel(): string
     {
         return static::$sectionModel;
     }
@@ -39,7 +40,7 @@ trait Section
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function section()
+    public static function section(): BaseModel
     {
         return new static::$sectionModel;
     }

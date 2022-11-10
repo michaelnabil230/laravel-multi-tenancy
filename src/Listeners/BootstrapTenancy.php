@@ -7,7 +7,13 @@ use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 class BootstrapTenancy
 {
-    public function handle(Tenancy\TenancyInitialized $event)
+    /**
+     * Handle the given event.
+     *
+     * @param  \MichaelNabil230\MultiTenancy\Events\Tenancy\TenancyInitialized  $event
+     * @return void
+     */
+    public function handle(Tenancy\TenancyInitialized $event): void
     {
         event(new Tenancy\BootstrappingTenancy($event->tenant));
 

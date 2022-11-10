@@ -10,13 +10,13 @@ class SeedDatabase
     /**
      * Handle the given event.
      *
-     * @param  \MichaelNabil230\MultiTenancy\Events\Tenant\TenantCreated  $tenant
+     * @param  \MichaelNabil230\MultiTenancy\Events\Tenant\TenantCreated  $event
      * @return void
      */
-    public function handle(TenantCreated $tenant)
+    public function handle(TenantCreated $event): void
     {
         Artisan::call('tenants:seed', [
-            '--tenants' => [$tenant->tenant->getKey()],
+            '--tenants' => [$event->tenant->getKey()],
         ]);
     }
 }

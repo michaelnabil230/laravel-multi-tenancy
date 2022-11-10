@@ -11,9 +11,8 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
 {
     public array $originalPaths = [];
 
-    public function __construct(
-        protected Application $app,
-    ) {
+    public function __construct(protected Application $app)
+    {
         $this->originalPaths = [
             'disks' => [],
             'storage' => $this->app->storagePath(),
@@ -31,7 +30,7 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
 
         // storage_path()
         if (config('multi-tenancy.filesystem.suffix_storage_path') ?? true) {
-            $this->app->useStoragePath($this->originalPaths['storage']."/{$suffix}");
+            $this->app->useStoragePath($this->originalPaths['storage']."/$suffix");
         }
 
         // asset()
@@ -48,13 +47,13 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
         Storage::forgetDisk(config('multi-tenancy.filesystem.disks', []));
 
         foreach (config('multi-tenancy.filesystem.disks', []) as $disk) {
-            $originalRoot = config("filesystems.disks.{$disk}.root");
+            $originalRoot = config("filesystems.disks.$disk.root");
             $this->originalPaths['disks'][$disk] = $originalRoot;
 
             $finalPrefix = str_replace(
                 ['%storage_path%', '%tenant%'],
                 [storage_path(), $tenant->getKey()],
-                config("multi-tenancy.filesystem.root_override.{$disk}", ''),
+                config("multi-tenancy.filesystem.root_override.$disk", ''),
             );
 
             if (! $finalPrefix) {
@@ -63,7 +62,7 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
                     : $suffix;
             }
 
-            config()->set("filesystems.disks.{$disk}.root", $finalPrefix);
+            config()->set("filesystems.disks.$disk.root", $finalPrefix);
         }
     }
 
@@ -79,7 +78,7 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
         // Storage facade
         Storage::forgetDisk(config('multi-tenancy.filesystem.disks', []));
         foreach (config('multi-tenancy.filesystem.disks', []) as $disk) {
-            config()->set("filesystems.disks.{$disk}.root", $this->originalPaths['disks'][$disk]);
+            config()->set("filesystems.disks.$disk.root", $this->originalPaths['disks'][$disk]);
         }
     }
 }

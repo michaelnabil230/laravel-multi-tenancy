@@ -8,7 +8,7 @@ use Facade\IgnitionContracts\Solution;
 
 class TenantCouldNotBeIdentifiedOnDomainException extends TenantCouldNotBeIdentifiedException implements ProvidesSolution
 {
-    public function __construct($domain)
+    public function __construct(string $domain)
     {
         parent::__construct("Tenant could not be identified on domain $domain");
     }

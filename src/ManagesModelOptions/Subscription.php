@@ -2,6 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy\ManagesModelOptions;
 
+use Illuminate\Database\Eloquent\Model as BaseModel;
 use MichaelNabil230\MultiTenancy\Models\Subscription as Model;
 
 trait Subscription
@@ -11,7 +12,7 @@ trait Subscription
      *
      * @var string
      */
-    public static $subscriptionModel = Model::class;
+    public static string $subscriptionModel = Model::class;
 
     /**
      * Set the subscription model class name.
@@ -19,7 +20,7 @@ trait Subscription
      * @param  string  $subscriptionModel
      * @return void
      */
-    public static function useSubscriptionModel($subscriptionModel)
+    public static function useSubscriptionModel(string $subscriptionModel): void
     {
         static::$subscriptionModel = $subscriptionModel;
     }
@@ -29,7 +30,7 @@ trait Subscription
      *
      * @return string
      */
-    public static function subscriptionModel()
+    public static function subscriptionModel(): string
     {
         return static::$subscriptionModel;
     }
@@ -39,7 +40,7 @@ trait Subscription
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function subscription()
+    public static function subscription(): BaseModel
     {
         return new static::$subscriptionModel;
     }

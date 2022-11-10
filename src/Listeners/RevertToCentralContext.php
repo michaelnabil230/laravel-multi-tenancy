@@ -7,7 +7,13 @@ use MichaelNabil230\MultiTenancy\MultiTenancy;
 
 class RevertToCentralContext
 {
-    public function handle(Events\Tenancy\TenancyEnded $event)
+    /**
+     * Handle the given event.
+     *
+     * @param  \MichaelNabil230\MultiTenancy\Events\Tenancy\TenancyEnded  $event
+     * @return void
+     */
+    public function handle(Events\Tenancy\TenancyEnded $event): void
     {
         event(new Events\RevertingToCentralContext($event->tenant));
 

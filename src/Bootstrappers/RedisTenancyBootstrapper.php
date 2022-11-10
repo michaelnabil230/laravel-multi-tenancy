@@ -12,9 +12,8 @@ class RedisTenancyBootstrapper implements TenancyBootstrapper
     /** @var array<string, string> Original prefixes of connections */
     public array $originalPrefixes = [];
 
-    public function __construct(
-        protected Repository $config,
-    ) {
+    public function __construct(protected Repository $config)
+    {
     }
 
     public function bootstrap(Tenant $tenant)

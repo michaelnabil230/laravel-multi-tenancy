@@ -9,7 +9,7 @@ if (! function_exists('tenant')) {
      * @param  string|null  $key
      * @return \MichaelNabil230\MultiTenancy\Models\Tenant|mixed|null
      */
-    function tenant($key = null)
+    function tenant(string|null $key = null)
     {
         if (is_null($key)) {
             return MultiTenancy::current();

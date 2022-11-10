@@ -8,7 +8,7 @@ use Facade\IgnitionContracts\Solution;
 
 class TenantCouldNotBeIdentifiedByRequestDataException extends TenantCouldNotBeIdentifiedException implements ProvidesSolution
 {
-    public function __construct($tenantId)
+    public function __construct(string $tenantId)
     {
         parent::__construct("Tenant could not be identified by request data with payload: $tenantId");
     }

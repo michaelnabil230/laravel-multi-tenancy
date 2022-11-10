@@ -43,9 +43,10 @@ class Period
      * @param  \Illuminate\Support\Carbon|string  $start
      * @return void
      */
-    public function __construct(PeriodicityType $interval = PeriodicityType::month, $period = 1, $start = '')
+    public function __construct(PeriodicityType $interval = PeriodicityType::month, int $period = 1, Carbon|string $start = '')
     {
         $this->interval = $interval;
+        $this->period = $period;
 
         if (empty($start)) {
             $this->start = Carbon::now();
@@ -55,10 +56,8 @@ class Period
             $this->start = $start;
         }
 
-        $this->period = $period;
-        $start = clone $this->start;
         $method = 'add'.ucfirst($this->interval->name).'s';
-        $this->end = $start->{$method}($this->period);
+        $this->end = $this->start->{$method}($this->period);
     }
 
     /**
@@ -69,7 +68,7 @@ class Period
      * @param  \Illuminate\Support\Carbon|string  $start
      * @return self
      */
-    public static function make(PeriodicityType $interval = PeriodicityType::month, $period = 1, $start = ''): self
+    public static function make(PeriodicityType $interval = PeriodicityType::month, int $period = 1, Carbon|string $start = ''): self
     {
         return new self($interval, $period, $start);
     }

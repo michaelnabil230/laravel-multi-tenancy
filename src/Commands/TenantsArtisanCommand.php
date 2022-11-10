@@ -59,7 +59,7 @@ class TenantsArtisanCommand extends Command
         $this->line($dots);
         $this->newLine();
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

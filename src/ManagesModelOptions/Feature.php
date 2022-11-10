@@ -2,6 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy\ManagesModelOptions;
 
+use Illuminate\Database\Eloquent\Model as BaseModel;
 use MichaelNabil230\MultiTenancy\Models\Feature as Model;
 
 trait Feature
@@ -11,7 +12,7 @@ trait Feature
      *
      * @var string
      */
-    public static $featureModel = Model::class;
+    public static string $featureModel = Model::class;
 
     /**
      * Set the feature model class name.
@@ -19,7 +20,7 @@ trait Feature
      * @param  string  $featureModel
      * @return void
      */
-    public static function useFeatureModel($featureModel)
+    public static function useFeatureModel(string $featureModel): void
     {
         static::$featureModel = $featureModel;
     }
@@ -29,7 +30,7 @@ trait Feature
      *
      * @return string
      */
-    public static function featureModel()
+    public static function featureModel(): string
     {
         return static::$featureModel;
     }
@@ -39,7 +40,7 @@ trait Feature
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function feature()
+    public static function feature(): BaseModel
     {
         return new static::$featureModel;
     }
