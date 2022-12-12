@@ -20,12 +20,12 @@ class TenantFinderByRequest extends TenantFinder
     {
         [$id, $byRoute] = (new self)->getPayload($request);
 
+        throw_if(is_null($id), 'The id is null given');
+
         return MultiTenancy::tenant()::query()
             ->where('id', $id)
             ->firstOr(function () use ($id, $byRoute) {
-                if ($byRoute) {
-                    throw new TenantCouldNotBeIdentifiedByPathException($id);
-                }
+                throw_if($byRoute, new TenantCouldNotBeIdentifiedByPathException($id));
 
                 throw new TenantCouldNotBeIdentifiedByRequestDataException($id);
             });
@@ -41,12 +41,9 @@ class TenantFinderByRequest extends TenantFinder
         } elseif (self::$queryParameter && $request->has(self::$queryParameter)) {
             $tenant = $request->get(self::$queryParameter);
         } else {
-            /** @var \Illuminate\Routing\Route $route */
-            $route = $request->route();
+            $tenant = $request->route(self::$tenantParameterName);
 
-            $tenant = $route->parameter(self::$tenantParameterName);
-
-            $route->forgetParameter(self::$tenantParameterName);
+            $request->route()->forgetParameter(self::$tenantParameterName);
 
             $byRoute = true;
         }

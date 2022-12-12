@@ -19,9 +19,10 @@ class DomainObserver
         $self->domain = strtolower($self->domain);
 
         if ($domain = $self->newQuery()->where('domain', $self->domain)->first()) {
-            if ($domain->getKey() !== $self->getKey()) {
-                throw new DomainOccupiedByOtherTenantException($self->domain);
-            }
+            throw_if(
+                $domain->getKey() !== $self->getKey(),
+                new DomainOccupiedByOtherTenantException($self->domain),
+            );
         }
     }
 

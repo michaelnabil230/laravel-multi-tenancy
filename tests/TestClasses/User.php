@@ -4,10 +4,11 @@ namespace MichaelNabil230\MultiTenancy\Tests\TestClasses;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use MichaelNabil230\MultiTenancy\Traits\HasOneTenant;
 
 class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasOneTenant;
 
     /**
      * The attributes that are mass assignable.
