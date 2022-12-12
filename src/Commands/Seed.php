@@ -42,8 +42,6 @@ class Seed extends Command
             return Command::FAILURE;
         }
 
-        $this->components->info('Running seed for tenants');
-
         $tenant = MultiTenancy::current();
 
         $this->components->task('Tenant: '.$tenant->getKey(), function () use ($tenant, $arguments) {

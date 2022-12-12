@@ -16,7 +16,7 @@ class SeedDatabase
     public function handle(TenantCreated $event): void
     {
         Artisan::call('tenants:seed', [
-            '--tenants' => [$event->tenant->getKey()],
+            '--tenant' => $event->tenant->getKey(),
         ]);
     }
 }

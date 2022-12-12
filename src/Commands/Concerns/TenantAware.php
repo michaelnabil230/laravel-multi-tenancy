@@ -2,6 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy\Commands\Concerns;
 
+use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use MichaelNabil230\MultiTenancy\Models\Tenant;
 use MichaelNabil230\MultiTenancy\MultiTenancy;
@@ -31,7 +32,7 @@ trait TenantAware
         if ($tenantQuery->count() === 0) {
             $this->components->error('No tenant(s) found.');
 
-            return -1;
+            return Command::FAILURE;
         }
 
         return $tenantQuery

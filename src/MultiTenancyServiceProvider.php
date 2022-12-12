@@ -21,7 +21,6 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
             ->hasCommands([
                 Commands\CreateTenant::class,
                 Commands\Seed::class,
-                Commands\TenantsArtisanCommand::class,
             ]);
     }
 

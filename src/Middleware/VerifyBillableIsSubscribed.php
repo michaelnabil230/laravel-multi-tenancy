@@ -27,7 +27,7 @@ class VerifyBillableIsSubscribed
 
         $route = config('multi-tenancy.subscription.route');
 
-        throw_if(is_null($route), new \Exception('Please insert your route in config `multi-tenancy.php`'));
+        throw_if(is_null($route), new \Exception('Please insert your route for the subscription in config `multi-tenancy.php`'));
 
         return to_route($route);
     }

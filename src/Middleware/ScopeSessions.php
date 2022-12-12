@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use MichaelNabil230\MultiTenancy\Exceptions\TenancyNotInitializedException;
 use MichaelNabil230\MultiTenancy\MultiTenancy;
+use Symfony\Component\HttpFoundation\Response;
 
 class ScopeSessions
 {
@@ -27,7 +28,7 @@ class ScopeSessions
         if (! $request->session()->has($sessionKey)) {
             $request->session()->put($sessionKey, tenant()->getKey());
         } else {
-            abort_if($request->session()->get($sessionKey) !== tenant()->getKey(), 403);
+            abort_if($request->session()->get($sessionKey) !== tenant()->getKey(), Response::HTTP_UNAUTHORIZED);
         }
 
         return $next($request);

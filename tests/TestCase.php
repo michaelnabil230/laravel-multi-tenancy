@@ -2,14 +2,19 @@
 
 namespace MichaelNabil230\MultiTenancy\Tests;
 
+use Illuminate\Console\Application;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use MichaelNabil230\MultiTenancy\MultiTenancy;
 use MichaelNabil230\MultiTenancy\MultiTenancyServiceProvider;
-use MichaelNabil230\MultiTenancy\Tests\Etc\User;
+use MichaelNabil230\MultiTenancy\Tests\Feature\Commands\TestClasses\TenantNoopCommand;
+use MichaelNabil230\MultiTenancy\Tests\TestClasses\User;
+use Orchestra\Testbench\Concerns\WithLaravelMigrations;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
+    use WithLaravelMigrations;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -21,14 +26,36 @@ class TestCase extends Orchestra
 
     protected function getPackageProviders($app)
     {
+        $this->bootCommands();
+
         return [
             MultiTenancyServiceProvider::class,
         ];
     }
 
+    protected function bootCommands(): self
+    {
+        Application::starting(function ($app) {
+            $app->resolveCommands([
+                TenantNoopCommand::class,
+            ]);
+        });
+
+        return $this;
+    }
+
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
+
+        config()->set('queue.default', 'database');
+        config()->set('queue.connections.database', [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'default',
+            'retry_after' => 90,
+            'connection' => 'testing',
+        ]);
 
         MultiTenancy::useOwnerModel(User::class);
 

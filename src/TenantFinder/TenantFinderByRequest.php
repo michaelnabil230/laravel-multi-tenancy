@@ -3,7 +3,6 @@
 namespace MichaelNabil230\MultiTenancy\TenantFinder;
 
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
 use MichaelNabil230\MultiTenancy\Exceptions\TenantCouldNotBeIdentifiedByPathException;
 use MichaelNabil230\MultiTenancy\Exceptions\TenantCouldNotBeIdentifiedByRequestDataException;
 use MichaelNabil230\MultiTenancy\Models\Tenant;
@@ -17,16 +16,14 @@ class TenantFinderByRequest extends TenantFinder
 
     public static string $tenantParameterName = 'tenant';
 
-    private static bool $byRoute = false;
-
     public static function find(Request $request): Tenant
     {
-        $id = (new self)->getPayload($request);
+        [$id, $byRoute] = (new self)->getPayload($request);
 
         return MultiTenancy::tenant()::query()
             ->where('id', $id)
-            ->firstOr(function () use ($id) {
-                if (self::$byRoute) {
+            ->firstOr(function () use ($id, $byRoute) {
+                if ($byRoute) {
                     throw new TenantCouldNotBeIdentifiedByPathException($id);
                 }
 
@@ -34,24 +31,26 @@ class TenantFinderByRequest extends TenantFinder
             });
     }
 
-    private function getPayload(Request $request): ?string
+    private function getPayload(Request $request): array
     {
         $tenant = null;
+        $byRoute = false;
+
         if (self::$header && $request->hasHeader(self::$header)) {
             $tenant = $request->header(self::$header);
         } elseif (self::$queryParameter && $request->has(self::$queryParameter)) {
             $tenant = $request->get(self::$queryParameter);
         } else {
-            /** @var Route $route */
+            /** @var \Illuminate\Routing\Route $route */
             $route = $request->route();
 
             $tenant = $route->parameter(self::$tenantParameterName);
 
             $route->forgetParameter(self::$tenantParameterName);
 
-            $this->byRoute = true;
+            $byRoute = true;
         }
 
-        return $tenant;
+        return [$tenant, $byRoute];
     }
 }

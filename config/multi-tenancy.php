@@ -53,6 +53,10 @@ return [
         Events\Domain\DeletingDomain::class => [],
         Events\Domain\DomainDeleted::class => [],
 
+        // DataBase events
+        Events\DataBase\SeedingDatabase::class => [],
+        Events\DataBase\DatabaseSeeded::class => [],
+
         // Tenancy events
         Events\Tenancy\InitializingTenancy::class => [],
         Events\Tenancy\TenancyInitialized::class => [
@@ -188,7 +192,7 @@ return [
         /**
          * Route for the subscription index
          */
-        // 'route' => route('subscription.index'),
+        'route' => null,
 
         /**
          * All events for subscription

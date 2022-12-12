@@ -29,12 +29,12 @@ class FilesystemTenancyBootstrapper implements TenancyBootstrapper
         $suffix = config('multi-tenancy.filesystem.suffix_base').$tenant->getKey();
 
         // storage_path()
-        if (config('multi-tenancy.filesystem.suffix_storage_path') ?? true) {
+        if (config('multi-tenancy.filesystem.suffix_storage_path', true)) {
             $this->app->useStoragePath($this->originalPaths['storage']."/$suffix");
         }
 
         // asset()
-        if (config('multi-tenancy.filesystem.asset_helper_tenancy') ?? true) {
+        if (config('multi-tenancy.filesystem.asset_helper_tenancy', true)) {
             if ($this->originalPaths['asset_url']) {
                 config()->set('app.asset_url', $this->originalPaths['asset_url']."/$suffix");
                 $this->app['url']->setAssetRoot(config('app.asset_url'));

@@ -78,6 +78,10 @@ return [
         Events\Domain\DeletingDomain::class => [],
         Events\Domain\DomainDeleted::class => [],
 
+        // DataBase events 
+        Events\DataBase\SeedingDatabase::class => [],
+        Events\DataBase\DatabaseSeeded::class => [],
+
         // Tenancy events
         Events\Tenancy\InitializingTenancy::class => [],
         Events\Tenancy\TenancyInitialized::class => [
@@ -213,7 +217,7 @@ return [
         /**
          * Route for the subscription index
          */
-        // 'route' => route('subscription.index'),
+        'route' => null,
 
         /**
          * All events for subscription
@@ -364,7 +368,7 @@ Conversely, when the `TenancyEnded` event fires, the `RevertToCentralContext` ev
 
 # Available events
 
-Note: Some database events (`DatabaseMigrated`, `DatabaseSeeded`, `DatabaseRolledback` and possibly others) are **fired in the tenant context.** Depending on how your application bootstraps tenancy, you might need to be specific about interacting with the central database in these events' listeners — that is, if you need to.
+Note: Some database events (`SeedingDatabase`, `DatabaseSeeded` and possibly others) are **fired in the tenant context.** Depending on how your application bootstraps tenancy, you might need to be specific about interacting with the central database in these events' listeners — that is, if you need to.
 
 Note: All events are located in the `MichaelNabil230\MultiTenancy\Events` namespace.
 
@@ -596,26 +600,6 @@ You can also execute the command for a specific tenant:
 
 ```bash
 php artisan your-favorite-command --tenant=1
-```
-
-## Using the tenants:artisan command
-
-If you cannot change an Artisan command yourself, for instance a command from Laravel itself or a command from a package, you can use `tenants:artisan <artisan command>`. This command will loop over tenants and for each of them make that tenant current, and execute the artisan command.
-
-### Passing arguments and options
-
-If you use quotes around the command part you can use any argument and option that the command supports.
-
-```bash
-php artisan tenants:artisan "send:email"
-```
-
-### Running artisan command for specific tenants
-
-If the command only needs to run for a specific tenant, you can pass its `id` to the `tenant` option.
-
-```bash
-php artisan tenants:artisan "send:email" --tenant=123
 ```
 
 ### Running artisan command for seed data to tenant
