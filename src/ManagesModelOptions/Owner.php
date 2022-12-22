@@ -2,7 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy\ManagesModelOptions;
 
-use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
 trait Owner
 {
@@ -37,9 +37,9 @@ trait Owner
     /**
      * Get a new owner model instance.
      *
-     * @return \Illuminate\Contracts\Auth\Authenticatable
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public static function owner(): Authenticatable
+    public static function owner(): Model
     {
         return new static::$ownerModel;
     }
