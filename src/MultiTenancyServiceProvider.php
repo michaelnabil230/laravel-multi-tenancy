@@ -145,10 +145,12 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
     protected function addTenantBlueprintMacro()
     {
         Blueprint::macro('tenant', function () {
+            /** @var \Illuminate\Database\Schema\Blueprint $this */
             $this->foreignUuid('tenant_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
         });
 
         Blueprint::macro('dropTenant', function () {
+            /** @var \Illuminate\Database\Schema\Blueprint $this */
             $this->dropConstrainedForeignId('tenant_id');
         });
 

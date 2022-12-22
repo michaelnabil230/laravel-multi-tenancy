@@ -21,6 +21,11 @@ parameters:
 			path: src/Commands/CreateTenant.php
 
 		-
+			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$canceled_at\\.$#"
+			count: 1
+			path: src/Commands/CreateTenant.php
+
+		-
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$ends_at\\.$#"
 			count: 1
 			path: src/Commands/CreateTenant.php
@@ -154,16 +159,6 @@ parameters:
 			message: "#^Method MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Tenant\\:\\:subscription\\(\\) should return MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\|null but returns Illuminate\\\\Database\\\\Eloquent\\\\Model\\|null\\.$#"
 			count: 1
 			path: src/Models/Tenant.php
-
-		-
-			message: "#^Call to an undefined method MichaelNabil230\\\\MultiTenancy\\\\MultiTenancyServiceProvider\\:\\:dropConstrainedForeignId\\(\\)\\.$#"
-			count: 1
-			path: src/MultiTenancyServiceProvider.php
-
-		-
-			message: "#^Call to an undefined method MichaelNabil230\\\\MultiTenancy\\\\MultiTenancyServiceProvider\\:\\:foreignUuid\\(\\)\\.$#"
-			count: 1
-			path: src/MultiTenancyServiceProvider.php
 
 		-
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Domain\\:\\:\\$domain\\.$#"
