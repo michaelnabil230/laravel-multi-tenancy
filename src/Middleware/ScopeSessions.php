@@ -19,9 +19,10 @@ class ScopeSessions
      */
     public function handle(Request $request, Closure $next)
     {
-        if (! MultiTenancy::checkCurrent()) {
-            throw new TenancyNotInitializedException('Tenancy needs to be initialized before the session scoping middleware is executed');
-        }
+        throw_unless(
+            MultiTenancy::checkCurrent(),
+            new TenancyNotInitializedException('Tenancy needs to be initialized before the session scoping middleware is executed'),
+        );
 
         $sessionKey = config('multi-tenancy.session_key', 'ensure_valid_tenant_session_tenant_id');
 

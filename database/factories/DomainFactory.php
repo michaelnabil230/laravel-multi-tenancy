@@ -11,6 +11,10 @@ class DomainFactory extends Factory
 
     public function definition()
     {
-        return [];
+        return [
+            'domain' => fake()->domainName(),
+            'is_premium' => fake()->boolean(),
+            'is_verified' => fake()->boolean(),
+        ];
     }
 }

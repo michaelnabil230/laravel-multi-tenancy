@@ -264,9 +264,7 @@ class Subscription extends Model
      */
     public function extendTrial(CarbonInterface $date): self
     {
-        if (! $date->isFuture()) {
-            throw new InvalidArgumentException("Extending a subscription's trial requires a date in the future.");
-        }
+        throw_unless($date->isFuture(), new InvalidArgumentException("Extending a subscription's trial requires a date in the future."));
 
         $this->fill([
             'trial_ends_at' => $date->getTimestamp(),
@@ -319,9 +317,7 @@ class Subscription extends Model
      */
     public function resume(): self
     {
-        if (! $this->onGracePeriod()) {
-            throw new LogicException('Unable to resume subscription that is not within grace period.');
-        }
+        throw_unless($this->onGracePeriod(), new LogicException('Unable to resume subscription that is not within grace period.'));
 
         // Finally, we will remove the ending timestamp from the user's record in the
         // local database to indicate that the subscription is active again and is
@@ -396,9 +392,7 @@ class Subscription extends Model
      */
     public function renew(): self
     {
-        if ($this->ended() && $this->canceled()) {
-            throw new LogicException('Unable to renew canceled ended subscription.');
-        }
+        throw_unless($this->onGracePeriod(), new LogicException('Unable to renew canceled ended subscription.'));
 
         $this->fill(array_merge($this->setNewPeriod(), [
             'canceled_at' => null,

@@ -54,8 +54,19 @@ class CreateTenant extends Command
             return Command::FAILURE;
         }
 
+        $email = $password = Str::random(8).'-admin'.'@admin.com';
+
+        $owner = MultiTenancy::owner()::create([
+            'name' => "Owner tenant $name",
+            'email' => $email,
+            'password' => $password,
+        ]);
+
         /** @var \MichaelNabil230\MultiTenancy\Models\Tenant $tenant */
-        $tenant = MultiTenancy::tenant()::create(['name' => $name]);
+        $tenant = MultiTenancy::tenant()::create([
+            'name' => $name,
+            'owner_id' => $owner->getKey(),
+        ]);
 
         $subscription = null;
         $plan = null;
@@ -64,14 +75,6 @@ class CreateTenant extends Command
             $plan = $this->getPlanSelected();
             $subscription = $tenant->createSubscription($plan)->create();
         }
-
-        $email = $password = $tenant->getKey().'-admin'.'@admin.com';
-
-        $owner = $tenant->owner()->create([
-            'name' => "Owner tenant $name",
-            'email' => $email,
-            'password' => $password,
-        ]);
 
         $domains = $tenant->domains()->createMany([
             ['domain' => $premiumDomain, 'is_premium' => true, 'is_verified' => true],
