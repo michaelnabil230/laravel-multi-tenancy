@@ -9,16 +9,11 @@ trait Section
 {
     /**
      * The section model class name.
-     *
-     * @var string
      */
     public static string $sectionModel = Model::class;
 
     /**
      * Set the section model class name.
-     *
-     * @param  string  $sectionModel
-     * @return void
      */
     public static function useSectionModel(string $sectionModel): void
     {
@@ -27,8 +22,6 @@ trait Section
 
     /**
      * Get the section model class name.
-     *
-     * @return string
      */
     public static function sectionModel(): string
     {
@@ -37,8 +30,6 @@ trait Section
 
     /**
      * Get a new section model instance.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public static function section(): BaseModel
     {

@@ -59,8 +59,6 @@ class Subscription extends Model
 
     /**
      * Determine if the subscription is active, on trial, or within its grace period.
-     *
-     * @return bool
      */
     public function valid(): bool
     {
@@ -69,8 +67,6 @@ class Subscription extends Model
 
     /**
      * Determine if the subscription is recurring and not on trial.
-     *
-     * @return bool
      */
     public function recurring(): bool
     {
@@ -79,9 +75,6 @@ class Subscription extends Model
 
     /**
      * Filter query by recurring.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeRecurring(Builder $query): void
     {
@@ -90,8 +83,6 @@ class Subscription extends Model
 
     /**
      * Determine if the subscription is no longer active.
-     *
-     * @return bool
      */
     public function canceled(): bool
     {
@@ -100,9 +91,6 @@ class Subscription extends Model
 
     /**
      * Filter query by canceled.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeCanceled(Builder $query): void
     {
@@ -111,9 +99,6 @@ class Subscription extends Model
 
     /**
      * Filter query by not canceled.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeNotCanceled(Builder $query): void
     {
@@ -122,8 +107,6 @@ class Subscription extends Model
 
     /**
      * Determine if the subscription has ended and the grace period has expired.
-     *
-     * @return bool
      */
     public function ended(): bool
     {
@@ -132,9 +115,6 @@ class Subscription extends Model
 
     /**
      * Filter query by ended.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeEnded(Builder $query): void
     {
@@ -143,8 +123,6 @@ class Subscription extends Model
 
     /**
      * Determine if the subscription is within its trial period.
-     *
-     * @return bool
      */
     public function onTrial(): bool
     {
@@ -153,9 +131,6 @@ class Subscription extends Model
 
     /**
      * Filter query by on trial.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeOnTrial(Builder $query): void
     {
@@ -164,8 +139,6 @@ class Subscription extends Model
 
     /**
      * Determine if the subscription's trial has expired.
-     *
-     * @return bool
      */
     public function hasExpiredTrial(): bool
     {
@@ -174,9 +147,6 @@ class Subscription extends Model
 
     /**
      * Filter query by expired trial.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeExpiredTrial(Builder $query): void
     {
@@ -185,9 +155,6 @@ class Subscription extends Model
 
     /**
      * Filter query by not on trial.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeNotOnTrial(Builder $query): void
     {
@@ -196,8 +163,6 @@ class Subscription extends Model
 
     /**
      * Determine if the subscription is within its grace period after cancellation.
-     *
-     * @return bool
      */
     public function onGracePeriod(): bool
     {
@@ -206,9 +171,6 @@ class Subscription extends Model
 
     /**
      * Filter query by on grace period.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeOnGracePeriod(Builder $query): void
     {
@@ -217,9 +179,6 @@ class Subscription extends Model
 
     /**
      * Filter query by not on grace period.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return void
      */
     public function scopeNotOnGracePeriod(Builder $query): void
     {
@@ -259,7 +218,6 @@ class Subscription extends Model
     /**
      * Extend an existing subscription's trial period.
      *
-     * @param  \Carbon\CarbonInterface  $date
      * @return $this
      */
     public function extendTrial(CarbonInterface $date): self
@@ -276,7 +234,6 @@ class Subscription extends Model
     /**
      * Cancel the subscription at a specific moment in time.
      *
-     * @param  \DateTimeInterface|int  $endsAt
      * @return $this
      */
     public function cancelAt(DateTimeInterface|int $endsAt): self
@@ -296,8 +253,6 @@ class Subscription extends Model
 
     /**
      * Cancel the subscription immediately.
-     *
-     * @return bool
      */
     public function cancelNow(): bool
     {
@@ -334,8 +289,6 @@ class Subscription extends Model
 
     /**
      * Check if subscription is active.
-     *
-     * @return bool
      */
     public function active(): bool
     {
@@ -344,8 +297,6 @@ class Subscription extends Model
 
     /**
      * Check if subscription is inactive.
-     *
-     * @return bool
      */
     public function inactive(): bool
     {
@@ -408,7 +359,6 @@ class Subscription extends Model
      *
      * @param  string|null  $invoiceInterval
      * @param  int|null  $invoicePeriod
-     * @return array
      */
     protected function setNewPeriod(int|null $invoiceInterval = null, int|null $invoicePeriod = null): array
     {

@@ -55,9 +55,6 @@ class SubscriptionBuilder
     /**
      * Create a new subscription builder instance.
      *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Tenant  $tenant
-     * @param  \MichaelNabil230\MultiTenancy\Models\Plan  $plan
-     * @param  \Illuminate\Support\Carbon|null  $startDate
      * @return void
      */
     public function __construct(Tenant $tenant, Plan $plan, Carbon $startDate = null)
@@ -71,11 +68,6 @@ class SubscriptionBuilder
 
     /**
      * Create a new subscription instance.
-     *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Tenant  $tenant
-     * @param  \MichaelNabil230\MultiTenancy\Models\Plan  $plan
-     * @param  \Illuminate\Support\Carbon|null  $startDate
-     * @return self
      */
     public static function make(Tenant $tenant, Plan $plan, Carbon $startDate = null): self
     {
@@ -124,9 +116,6 @@ class SubscriptionBuilder
 
     /**
      * Create subscription to a new plan.
-     *
-     * @param  array  $attributes
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function create(array $attributes = []): Model
     {
@@ -137,8 +126,6 @@ class SubscriptionBuilder
 
     /**
      * Build the payload for subscription creation.
-     *
-     * @return array
      */
     protected function buildPayload(): array
     {
@@ -154,8 +141,6 @@ class SubscriptionBuilder
 
     /**
      * Get dates of the start and end of the subscription.
-     *
-     * @return array
      */
     public function getStartAndEndDates(): array
     {

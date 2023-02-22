@@ -33,8 +33,6 @@ class Section extends Model
 
     /**
      * The section may belong to many features.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function features(): BelongsToMany
     {

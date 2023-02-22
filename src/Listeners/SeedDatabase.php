@@ -9,9 +9,6 @@ class SeedDatabase
 {
     /**
      * Handle the given event.
-     *
-     * @param  \MichaelNabil230\MultiTenancy\Events\Tenant\TenantCreated  $event
-     * @return void
      */
     public function handle(TenantCreated $event): void
     {

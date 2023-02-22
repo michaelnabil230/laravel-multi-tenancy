@@ -9,16 +9,11 @@ trait Subscription
 {
     /**
      * The subscription model class name.
-     *
-     * @var string
      */
     public static string $subscriptionModel = Model::class;
 
     /**
      * Set the subscription model class name.
-     *
-     * @param  string  $subscriptionModel
-     * @return void
      */
     public static function useSubscriptionModel(string $subscriptionModel): void
     {
@@ -27,8 +22,6 @@ trait Subscription
 
     /**
      * Get the subscription model class name.
-     *
-     * @return string
      */
     public static function subscriptionModel(): string
     {
@@ -37,8 +30,6 @@ trait Subscription
 
     /**
      * Get a new subscription model instance.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public static function subscription(): BaseModel
     {

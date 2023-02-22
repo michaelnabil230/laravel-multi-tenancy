@@ -9,16 +9,11 @@ trait Feature
 {
     /**
      * The feature model class name.
-     *
-     * @var string
      */
     public static string $featureModel = Model::class;
 
     /**
      * Set the feature model class name.
-     *
-     * @param  string  $featureModel
-     * @return void
      */
     public static function useFeatureModel(string $featureModel): void
     {
@@ -27,8 +22,6 @@ trait Feature
 
     /**
      * Get the feature model class name.
-     *
-     * @return string
      */
     public static function featureModel(): string
     {
@@ -37,8 +30,6 @@ trait Feature
 
     /**
      * Get a new feature model instance.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public static function feature(): BaseModel
     {

@@ -31,8 +31,6 @@ class CreateTenant extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
     public function handle(): int
     {
@@ -93,11 +91,6 @@ class CreateTenant extends Command
 
     /**
      * Check if the domain exists before be to create.
-     *
-     * @param  string  $premiumDomain
-     * @param  string  $dashboardDomain
-     * @param  string  $apiDomain
-     * @return bool
      */
     public function ifDomainIsExists(string $premiumDomain, string $dashboardDomain, string $apiDomain): bool
     {
@@ -130,11 +123,6 @@ class CreateTenant extends Command
     /**
      * Display the data as json or in cli.
      *
-     * @param  string  $email
-     * @param  string  $password
-     * @param  Collection  $domains
-     * @param  Plan|null  $plan
-     * @param  Subscription|null  $subscription
      * @return void
      */
     public function displayData(
@@ -151,13 +139,6 @@ class CreateTenant extends Command
 
     /**
      * Convert the given data to JSON.
-     *
-     * @param  string  $email
-     * @param  string  $password
-     * @param  Collection  $domains
-     * @param  Plan|null  $plan
-     * @param  Subscription|null  $subscription
-     * @return void
      */
     protected function asJson(
         string $email,
@@ -177,11 +158,6 @@ class CreateTenant extends Command
 
     /**
      * Convert the given data to regular CLI output.
-     *
-     * @param  string  $email
-     * @param  string  $password
-     * @param  Collection  $domains
-     * @return void
      */
     protected function forCli(
         string $email,
@@ -231,7 +207,6 @@ class CreateTenant extends Command
     /**
      * Get all domains by name.
      *
-     * @param  string  $name
      * @return array<int, string>
      */
     protected function getDomains(string $name): array
@@ -258,8 +233,6 @@ class CreateTenant extends Command
 
     /**
      * Get the console command options.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {

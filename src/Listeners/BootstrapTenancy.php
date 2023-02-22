@@ -11,7 +11,6 @@ class BootstrapTenancy
      * Handle the given event.
      *
      * @param  \MichaelNabil230\MultiTenancy\Events\Tenancy\TenancyInitialized  $event
-     * @return void
      */
     public function handle(Tenancy\TenancyInitialized $event): void
     {

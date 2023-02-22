@@ -10,10 +10,6 @@ trait HasValidationRules
 {
     /**
      * Get a unique with the wrapper tenant constraint builder instance.
-     *
-     * @param  string  $table
-     * @param  string  $column
-     * @return \Illuminate\Validation\Rules\Unique
      */
     public function unique(string $table, string $column = 'NULL'): Unique
     {
@@ -22,10 +18,6 @@ trait HasValidationRules
 
     /**
      * Get an exists with the wrapper tenant constraint builder instance
-     *
-     * @param  string  $table
-     * @param  string  $column
-     * @return \Illuminate\Validation\Rules\Exists
      */
     public function exists(string $table, string $column = 'NULL'): Exists
     {

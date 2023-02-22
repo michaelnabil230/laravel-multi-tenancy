@@ -35,8 +35,6 @@ class MultiTenancy
 
     /**
      * If the subscription is enabled in the config file.
-     *
-     * @return bool
      */
     public static function subscriptionEnable(): bool
     {
@@ -60,8 +58,6 @@ class MultiTenancy
     /**
      * Catch any error in fail in middlewares
      *
-     * @param  \Exception  $e
-     * @param  \Illuminate\Http\Request  $request
      * @return callable
      */
     public static function onFail(Exception $e, Request $request)
@@ -75,9 +71,6 @@ class MultiTenancy
 
     /**
      * Add the tenant in app container.
-     *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Tenant  $tenant
-     * @return \MichaelNabil230\MultiTenancy\Models\Tenant
      */
     public static function bindAsCurrentTenant(Tenant $tenant): Tenant
     {
@@ -90,8 +83,6 @@ class MultiTenancy
 
     /**
      * Get the current tenant form app container.
-     *
-     * @return \MichaelNabil230\MultiTenancy\Models\Tenant|null
      */
     public static function current(): ?Tenant
     {
@@ -104,8 +95,6 @@ class MultiTenancy
 
     /**
      * Check if has current tenant form app container.
-     *
-     * @return bool
      */
     public static function checkCurrent(): bool
     {
@@ -114,8 +103,6 @@ class MultiTenancy
 
     /**
      * Forget the current tenant form app container.
-     *
-     * @return  \MichaelNabil230\MultiTenancy\Models\Tenant|null
      */
     public static function forgetCurrent(): ?Tenant
     {
@@ -132,8 +119,6 @@ class MultiTenancy
 
     /**
      * All available plans.
-     *
-     * @return \Illuminate\Support\Collection
      */
     public static function plans(): Collection
     {

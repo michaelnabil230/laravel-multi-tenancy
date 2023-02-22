@@ -15,8 +15,6 @@ trait HasSubscriptions
 {
     /**
      * Get all of the subscriptions.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function subscriptions(): HasMany
     {
@@ -27,8 +25,6 @@ trait HasSubscriptions
 
     /**
      * Get the last of the subscription.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function lastSubscription(): HasOne
     {
@@ -39,9 +35,6 @@ trait HasSubscriptions
 
     /**
      * Get a subscription by plan id.
-     *
-     * @param  int  $planId
-     * @return \MichaelNabil230\MultiTenancy\Models\Subscription|null
      */
     public function subscription(int $planId): ?Subscription
     {
@@ -50,10 +43,6 @@ trait HasSubscriptions
 
     /**
      * Create subscription to a new plan.
-     *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Plan  $plan
-     * @param  \Illuminate\Support\Carbon|null  $startDate
-     * @return \MichaelNabil230\MultiTenancy\SubscriptionBuilder
      */
     public function createSubscription(Plan $plan, Carbon $startDate = null): SubscriptionBuilder
     {
@@ -64,9 +53,6 @@ trait HasSubscriptions
 
     /**
      * Determine if the model has a given subscription.
-     *
-     * @param  int  $planId
-     * @return bool
      */
     public function subscribed(int $planId): bool
     {
@@ -81,9 +67,6 @@ trait HasSubscriptions
 
     /**
      * Determine if the model is on trial.
-     *
-     * @param  int  $planId
-     * @return bool
      */
     public function onTrial(int $planId): bool
     {
@@ -102,9 +85,6 @@ trait HasSubscriptions
 
     /**
      * Determine if the model's trial has ended.
-     *
-     * @param  int  $planId
-     * @return bool
      */
     public function hasExpiredTrial(int $planId): bool
     {
@@ -123,8 +103,6 @@ trait HasSubscriptions
 
     /**
      * Determine if the model is on a "generic" trial at the model level.
-     *
-     * @return bool
      */
     public function onGenericTrial(): bool
     {
@@ -133,8 +111,6 @@ trait HasSubscriptions
 
     /**
      * Determine if the model's "generic" trial at the model level has expired.
-     *
-     * @return bool
      */
     public function hasExpiredGenericTrial(): bool
     {

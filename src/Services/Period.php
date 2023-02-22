@@ -38,9 +38,6 @@ class Period
     /**
      * Create a new Period instance.
      *
-     * @param  \MichaelNabil230\MultiTenancy\Enums\PeriodicityType  $interval
-     * @param  int  $period
-     * @param  \Illuminate\Support\Carbon|string  $start
      * @return void
      */
     public function __construct(PeriodicityType $interval = PeriodicityType::month, int $period = 1, Carbon|string $start = '')
@@ -62,11 +59,6 @@ class Period
 
     /**
      * Create a new Period instance.
-     *
-     * @param  \MichaelNabil230\MultiTenancy\Enums\PeriodicityType  $interval
-     * @param  int  $period
-     * @param  \Illuminate\Support\Carbon|string  $start
-     * @return self
      */
     public static function make(PeriodicityType $interval = PeriodicityType::month, int $period = 1, Carbon|string $start = ''): self
     {
@@ -75,8 +67,6 @@ class Period
 
     /**
      * Get start date.
-     *
-     * @return string
      */
     public function getStartDate(): string
     {
@@ -85,8 +75,6 @@ class Period
 
     /**
      * Get end date.
-     *
-     * @return string
      */
     public function getEndDate(): string
     {
@@ -95,8 +83,6 @@ class Period
 
     /**
      * Get period interval.
-     *
-     * @return string
      */
     public function getInterval(): string
     {
@@ -105,8 +91,6 @@ class Period
 
     /**
      * Get period interval count.
-     *
-     * @return int
      */
     public function getIntervalCount(): int
     {

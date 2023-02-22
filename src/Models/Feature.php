@@ -41,8 +41,6 @@ class Feature extends Model
 
     /**
      * Get the options for generating the slug.
-     *
-     * @return \Spatie\Sluggable\SlugOptions
      */
     public function getSlugOptions(): SlugOptions
     {
@@ -53,8 +51,6 @@ class Feature extends Model
 
     /**
      * The feature may belong to many plans.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function plans(): BelongsToMany
     {

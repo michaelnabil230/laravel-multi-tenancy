@@ -8,16 +8,11 @@ trait Owner
 {
     /**
      * The owner model class name.
-     *
-     * @var string
      */
     public static string $ownerModel = 'App\Models\User';
 
     /**
      * Set the owner model class name.
-     *
-     * @param  string  $ownerModel
-     * @return void
      */
     public static function useOwnerModel(string $ownerModel): void
     {
@@ -26,8 +21,6 @@ trait Owner
 
     /**
      * Get the owner model class name.
-     *
-     * @return string
      */
     public static function ownerModel(): string
     {
@@ -36,8 +29,6 @@ trait Owner
 
     /**
      * Get a new owner model instance.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public static function owner(): Model
     {

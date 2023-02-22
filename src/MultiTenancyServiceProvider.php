@@ -2,6 +2,7 @@
 
 namespace MichaelNabil230\MultiTenancy;
 
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Event;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -37,6 +38,7 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
     {
         $this
             ->registerPublishing()
+            ->makeTenancyMiddlewareHighestPriority()
             ->addTenantBlueprintMacro();
     }
 
@@ -138,6 +140,26 @@ class MultiTenancyServiceProvider extends PackageServiceProvider
         $self->callSilently('vendor:publish', [
             '--tag' => "{$this->package->shortName()}-routes",
         ]);
+
+        return $this;
+    }
+
+    protected function makeTenancyMiddlewareHighestPriority()
+    {
+        $tenancyMiddleware = [
+            // Even higher priority than the initialization middleware
+            Middleware\PreventAccessFromCentralDomains::class,
+
+            Middleware\InitializeTenancyByDomain::class,
+            Middleware\InitializeTenancyBySubdomain::class,
+            Middleware\InitializeTenancyByDomainOrSubdomain::class,
+            Middleware\InitializeTenancyByPath::class,
+            Middleware\InitializeTenancyByRequestData::class,
+        ];
+
+        foreach (array_reverse($tenancyMiddleware) as $middleware) {
+            app(Kernel::class)->prependToMiddlewarePriority($middleware);
+        }
 
         return $this;
     }

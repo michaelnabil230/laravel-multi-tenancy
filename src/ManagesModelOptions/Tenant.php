@@ -9,16 +9,11 @@ trait Tenant
 {
     /**
      * The tenant model class name.
-     *
-     * @var string
      */
     public static string $tenantModel = Model::class;
 
     /**
      * Set the tenant model class name.
-     *
-     * @param  string  $tenantModel
-     * @return void
      */
     public static function useTenantModel(string $tenantModel): void
     {
@@ -27,8 +22,6 @@ trait Tenant
 
     /**
      * Get the tenant model class name.
-     *
-     * @return string
      */
     public static function tenantModel(): string
     {
@@ -37,8 +30,6 @@ trait Tenant
 
     /**
      * Get a new tenant model instance.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public static function tenant(): BaseModel
     {

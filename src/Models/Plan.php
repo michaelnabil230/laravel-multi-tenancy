@@ -60,8 +60,6 @@ class Plan extends Model
 
     /**
      * Get the options for generating the slug.
-     *
-     * @return \Spatie\Sluggable\SlugOptions
      */
     public function getSlugOptions(): SlugOptions
     {
@@ -72,8 +70,6 @@ class Plan extends Model
 
     /**
      * The plan may belong to many features.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function features(): BelongsToMany
     {
@@ -82,8 +78,6 @@ class Plan extends Model
 
     /**
      * The plan may have many subscriptions.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function subscriptions(): HasMany
     {
@@ -92,8 +86,6 @@ class Plan extends Model
 
     /**
      * Check if plan is free.
-     *
-     * @return bool
      */
     public function isFree(): bool
     {
@@ -102,8 +94,6 @@ class Plan extends Model
 
     /**
      * Check if plan has trial.
-     *
-     * @return bool
      */
     public function hasTrial(): bool
     {
@@ -113,7 +103,6 @@ class Plan extends Model
     /**
      * Get plan feature by slug.
      *
-     * @param  string  $slug
      * @return \MichaelNabil230\MultiTenancy\Models\Feature|null
      */
     public function getFeatureBySlug(string $slug): ?Feature
@@ -123,9 +112,6 @@ class Plan extends Model
 
     /**
      * Get if plan has feature by slug.
-     *
-     * @param  string  $slug
-     * @return bool
      */
     public function hasFeature(string $slug): bool
     {

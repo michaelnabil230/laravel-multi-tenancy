@@ -57,8 +57,6 @@ class Tenant extends Model
 
     /**
      * Get all of the domains for the Tenant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function domains(): HasMany
     {
@@ -67,8 +65,6 @@ class Tenant extends Model
 
     /**
      * Get the owner that owns the Tenant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner(): BelongsTo
     {
@@ -77,8 +73,6 @@ class Tenant extends Model
 
     /**
      * Initializes the tenant.
-     *
-     * @return static
      */
     public function initialize(): static
     {

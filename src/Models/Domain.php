@@ -54,8 +54,6 @@ class Domain extends Model
 
     /**
      * Get the tenant that owns the Domain
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function tenant(): BelongsTo
     {
@@ -66,8 +64,6 @@ class Domain extends Model
 
     /**
      * Get the domain's isSubdomain.
-     *
-     * @return \Illuminate\Database\Eloquent\Casts\Attribute
      */
     protected function isSubdomain(): Attribute
     {

@@ -10,8 +10,6 @@ trait BelongsToTenant
 {
     /**
      * The model always belongs to a tenant.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function tenant(): BelongsTo
     {

@@ -11,7 +11,6 @@ class DomainObserver
     /**
      * Handle the Domain "saving" event.
      *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Domain  $self
      * @return void
      */
     public function saving(Domain $self)
@@ -29,7 +28,6 @@ class DomainObserver
     /**
      * Handle the Domain "created" event.
      *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Domain  $domain
      * @return void
      */
     public function created(Domain $domain)
@@ -42,7 +40,6 @@ class DomainObserver
     /**
      * Handle the Domain "updated" event.
      *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Domain  $domain
      * @return void
      */
     public function updated(Domain $domain)

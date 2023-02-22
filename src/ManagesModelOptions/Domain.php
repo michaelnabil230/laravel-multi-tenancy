@@ -9,16 +9,11 @@ trait Domain
 {
     /**
      * The domain model class name.
-     *
-     * @var string
      */
     public static string $domainModel = Model::class;
 
     /**
      * Set the domain model class name.
-     *
-     * @param  string  $domainModel
-     * @return void
      */
     public static function useDomainModel(string $domainModel): void
     {
@@ -27,8 +22,6 @@ trait Domain
 
     /**
      * Get the domain model class name.
-     *
-     * @return string
      */
     public static function domainModel(): string
     {
@@ -37,8 +30,6 @@ trait Domain
 
     /**
      * Get a new domain model instance.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public static function domain(): BaseModel
     {

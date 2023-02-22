@@ -10,9 +10,7 @@ class VerifyBillableIsSubscribed
     /**
      * Verify the incoming request's tenant has a subscription.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @param  int  $planId
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle(Request $request, Closure $next, int $planId)

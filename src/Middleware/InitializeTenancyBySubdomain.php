@@ -8,13 +8,12 @@ use MichaelNabil230\MultiTenancy\Exceptions\NotASubdomainException;
 use MichaelNabil230\MultiTenancy\MultiTenancy;
 use MichaelNabil230\MultiTenancy\TenantFinder\TenantFinderByDomain;
 
-class InitializeTenancyBySubdomain extends InitializeTenancyByDomain
+class InitializeTenancyBySubdomain
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function handle($request, Closure $next)
@@ -30,7 +29,14 @@ class InitializeTenancyBySubdomain extends InitializeTenancyByDomain
         return $next($request);
     }
 
-    protected function makeSubdomain(string $hostname): NotASubdomainException
+    /**
+     * Check if the hostname is a subdomain or not
+     *
+     * @return void
+     *
+     * @throws \MichaelNabil230\MultiTenancy\Exceptions\NotASubdomainException
+     */
+    protected function makeSubdomain(string $hostname)
     {
         $parts = explode('.', $hostname);
 

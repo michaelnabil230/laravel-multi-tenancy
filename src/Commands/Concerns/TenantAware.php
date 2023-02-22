@@ -14,10 +14,6 @@ trait TenantAware
 {
     /**
      * Execute the console command.
-     *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -43,8 +39,6 @@ trait TenantAware
 
     /**
      * Get the console command options.
-     *
-     * @return array
      */
     protected function getOptions(): array
     {
@@ -55,8 +49,6 @@ trait TenantAware
 
     /**
      * The fields for making a search in the query.
-     *
-     * @return array
      */
     public function getTenantArtisanSearchFields(): array
     {

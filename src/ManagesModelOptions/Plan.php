@@ -9,16 +9,11 @@ trait Plan
 {
     /**
      * The plan model class name.
-     *
-     * @var string
      */
     public static string $planModel = Model::class;
 
     /**
      * Set the plan model class name.
-     *
-     * @param  string  $planModel
-     * @return void
      */
     public static function usePlanModel(string $planModel): void
     {
@@ -27,8 +22,6 @@ trait Plan
 
     /**
      * Get the plan model class name.
-     *
-     * @return string
      */
     public static function planModel(): string
     {
@@ -37,8 +30,6 @@ trait Plan
 
     /**
      * Get a new plan model instance.
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public static function plan(): BaseModel
     {

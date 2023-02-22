@@ -9,8 +9,6 @@ trait HasOneTenant
 {
     /**
      * Get the tenant associated with the HasOneTenant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function tenant(): HasOne
     {
