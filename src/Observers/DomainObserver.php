@@ -28,9 +28,7 @@ class DomainObserver
      */
     public function created(Domain $domain): void
     {
-        if ($domain->is_premium && ! $domain->is_subdomain) {
-            CheckDomainVerification::dispatch($domain);
-        }
+        $this->checkDomainVerification($domain);
     }
 
     /**
@@ -38,8 +36,13 @@ class DomainObserver
      */
     public function updating(Domain $domain): void
     {
-        $domain->update(['is_verified' => false]);
+        $domain->is_verified = false;
 
+        $this->checkDomainVerification($domain);
+    }
+
+    protected function checkDomainVerification(Domain $domain): void
+    {
         if ($domain->is_premium && ! $domain->is_subdomain) {
             CheckDomainVerification::dispatch($domain);
         }
