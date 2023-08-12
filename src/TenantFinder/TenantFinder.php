@@ -15,8 +15,8 @@ abstract class TenantFinder
     {
         try {
             return static::find($request)->initialize();
-        } catch (TenantCouldNotBeIdentifiedException $e) {
-            return MultiTenancy::onFail($e, $request);
+        } catch (TenantCouldNotBeIdentifiedException $exception) {
+            return MultiTenancy::onFail($exception, $request);
         }
     }
 }

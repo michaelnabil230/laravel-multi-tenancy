@@ -16,11 +16,9 @@ class TenantFinderByUser extends TenantFinder
 
         throw_unless($user instanceof Authenticatable, 'The user is not an instance of by `Authenticatable`');
 
-        throw_if(is_null($user), new AuthenticationException);
+        throw_if($user == null, new AuthenticationException);
 
-        $tenant = $user->tenant;
-
-        if (! is_null($tenant)) {
+        if (! is_null($tenant = $user->tenant)) {
             return $tenant;
         }
 

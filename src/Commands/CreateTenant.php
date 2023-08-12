@@ -105,8 +105,6 @@ class CreateTenant extends Command
 
     /**
      * The get plan is selected by the user.
-     *
-     * @return \MichaelNabil230\MultiTenancy\Models\Plan
      */
     public function getPlanSelected(): ?Plan
     {
@@ -122,16 +120,14 @@ class CreateTenant extends Command
 
     /**
      * Display the data as json or in cli.
-     *
-     * @return void
      */
     public function displayData(
         string $email,
         string $password,
         Collection $domains,
-        Plan|null $plan,
-        Subscription|null $subscription,
-    ) {
+        ?Plan $plan,
+        ?Subscription $subscription,
+    ): void {
         $this->option('json')
             ? $this->asJson($email, $password, $domains, $plan, $subscription)
             : $this->forCli($email, $password, $domains, $plan, $subscription);
@@ -144,8 +140,8 @@ class CreateTenant extends Command
         string $email,
         string $password,
         Collection $domains,
-        Plan|null $plan,
-        Subscription|null $subscription,
+        ?Plan $plan,
+        ?Subscription $subscription,
     ): void {
         $this->output->writeln(collect([
             'email' => $email,
@@ -163,8 +159,8 @@ class CreateTenant extends Command
         string $email,
         string $password,
         Collection $domains,
-        Plan|null $plan,
-        Subscription|null $subscription,
+        ?Plan $plan,
+        ?Subscription $subscription,
     ): void {
         $this->components->twoColumnDetail('<fg=green;options=bold>Owner credentials</>');
         $this->components->twoColumnDetail('Email', $email);
@@ -221,10 +217,8 @@ class CreateTenant extends Command
 
     /**
      * Get the console command arguments.
-     *
-     * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [
             ['name', InputArgument::REQUIRED, 'The name of the tenant.', null],

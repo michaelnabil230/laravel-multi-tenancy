@@ -21,11 +21,6 @@ parameters:
 			path: src/Commands/CreateTenant.php
 
 		-
-			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$canceled_at\\.$#"
-			count: 1
-			path: src/Commands/CreateTenant.php
-
-		-
 			message: "#^Access to an undefined property MichaelNabil230\\\\MultiTenancy\\\\Models\\\\Subscription\\:\\:\\$ends_at\\.$#"
 			count: 1
 			path: src/Commands/CreateTenant.php
@@ -137,11 +132,6 @@ parameters:
 
 		-
 			message: "#^Call to function array_merge\\(\\) on a separate line has no effect\\.$#"
-			count: 1
-			path: src/Models/Subscription.php
-
-		-
-			message: "#^PHPDoc tag @param for parameter \\$invoiceInterval with type string\\|null is not subtype of native type int\\|null\\.$#"
 			count: 1
 			path: src/Models/Subscription.php
 

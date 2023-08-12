@@ -9,49 +9,40 @@ class Period
 {
     /**
      * Starting date of the period.
-     *
-     * @var string
      */
-    protected $start;
+    protected string $start;
 
     /**
      * Ending date of the period.
-     *
-     * @var string
      */
-    protected $end;
+    protected string $end;
 
     /**
      * Interval.
-     *
-     * @var \MichaelNabil230\MultiTenancy\Enums\PeriodicityType
      */
-    protected $interval;
+    protected PeriodicityType $interval;
 
     /**
      * Interval count.
-     *
-     * @var int
      */
-    protected $period = 1;
+    protected int $period = 1;
 
     /**
      * Create a new Period instance.
-     *
-     * @return void
      */
-    public function __construct(PeriodicityType $interval = PeriodicityType::month, int $period = 1, Carbon|string $start = '')
-    {
+    public function __construct(
+        PeriodicityType $interval = PeriodicityType::month,
+        int $period = 1,
+        Carbon|string $start = '',
+    ) {
         $this->interval = $interval;
         $this->period = $period;
 
-        if (empty($start)) {
-            $this->start = Carbon::now();
-        } elseif (! $start instanceof Carbon) {
-            $this->start = new Carbon($start);
-        } else {
-            $this->start = $start;
-        }
+        $this->start = match (true) {
+            empty($start) => Carbon::now(),
+            ! $start instanceof Carbon => new Carbon($start),
+            default => $start,
+        };
 
         $method = 'add'.ucfirst($this->interval->name).'s';
         $this->end = $this->start->{$method}($this->period);
@@ -60,8 +51,11 @@ class Period
     /**
      * Create a new Period instance.
      */
-    public static function make(PeriodicityType $interval = PeriodicityType::month, int $period = 1, Carbon|string $start = ''): self
-    {
+    public static function make(
+        PeriodicityType $interval = PeriodicityType::month,
+        int $period = 1,
+        Carbon|string $start = '',
+    ): self {
         return new self($interval, $period, $start);
     }
 

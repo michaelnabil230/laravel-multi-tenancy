@@ -4,16 +4,17 @@ namespace MichaelNabil230\MultiTenancy\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use MichaelNabil230\MultiTenancy\Models\Tenant;
+use Symfony\Component\HttpFoundation\Response;
 
 class VerifyBillableIsSubscribed
 {
     /**
      * Verify the incoming request's tenant has a subscription.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, int $planId)
+    public function handle(Request $request, Closure $next, int $planId): Response
     {
         if ($this->subscribed(tenant(), $planId)) {
             return $next($request);
@@ -32,12 +33,8 @@ class VerifyBillableIsSubscribed
 
     /**
      * Determine if the given tenant is subscribed to the given plan.
-     *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Tenant  $tenant
-     * @param  int  $planId
-     * @return bool
      */
-    protected function subscribed($tenant, $planId)
+    protected function subscribed(Tenant $tenant, int $planId): bool
     {
         if (! $tenant) {
             return false;

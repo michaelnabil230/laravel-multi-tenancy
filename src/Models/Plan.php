@@ -102,8 +102,6 @@ class Plan extends Model
 
     /**
      * Get plan feature by slug.
-     *
-     * @return \MichaelNabil230\MultiTenancy\Models\Feature|null
      */
     public function getFeatureBySlug(string $slug): ?Feature
     {

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use InvalidArgumentException;
 use LogicException;
+use MichaelNabil230\MultiTenancy\Enums\PeriodicityType;
 use MichaelNabil230\MultiTenancy\Events\Subscription as EventsSubscription;
 use MichaelNabil230\MultiTenancy\Services\Period;
 use MichaelNabil230\MultiTenancy\Traits\BelongsToPlan;
@@ -189,8 +190,6 @@ class Subscription extends Model
      * Force the trial to end immediately.
      *
      * This method must be combined with swap, resume, etc.
-     *
-     * @return $this
      */
     public function skipTrial(): self
     {
@@ -201,8 +200,6 @@ class Subscription extends Model
 
     /**
      * Force the subscription's trial to end immediately.
-     *
-     * @return $this
      */
     public function endTrial(): self
     {
@@ -217,8 +214,6 @@ class Subscription extends Model
 
     /**
      * Extend an existing subscription's trial period.
-     *
-     * @return $this
      */
     public function extendTrial(CarbonInterface $date): self
     {
@@ -233,8 +228,6 @@ class Subscription extends Model
 
     /**
      * Cancel the subscription at a specific moment in time.
-     *
-     * @return $this
      */
     public function cancelAt(DateTimeInterface|int $endsAt): self
     {
@@ -265,8 +258,6 @@ class Subscription extends Model
 
     /**
      * Resume the canceled subscription.
-     *
-     * @return $this
      *
      * @throws \LogicException
      */
@@ -305,9 +296,6 @@ class Subscription extends Model
 
     /**
      * Change subscription plan.
-     *
-     * @param  \MichaelNabil230\MultiTenancy\Models\Plan  $plan
-     * @return $this
      */
     public function changePlan(Plan $plan): self
     {
@@ -337,8 +325,6 @@ class Subscription extends Model
     /**
      * Renew subscription period.
      *
-     * @return $this
-     *
      * @throws \LogicException
      */
     public function renew(): self
@@ -356,11 +342,8 @@ class Subscription extends Model
 
     /**
      * Set new subscription period.
-     *
-     * @param  string|null  $invoiceInterval
-     * @param  int|null  $invoicePeriod
      */
-    protected function setNewPeriod(int|null $invoiceInterval = null, int|null $invoicePeriod = null): array
+    protected function setNewPeriod(PeriodicityType $invoiceInterval = null, int $invoicePeriod = null): array
     {
         if (is_null($invoiceInterval)) {
             $invoiceInterval = $this->plan->invoice_interval;

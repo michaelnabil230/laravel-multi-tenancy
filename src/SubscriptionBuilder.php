@@ -12,50 +12,36 @@ class SubscriptionBuilder
 {
     /**
      * The owner being subscribed to.
-     *
-     * @var \MichaelNabil230\MultiTenancy\Models\Tenant
      */
-    protected $tenant;
+    protected Tenant $tenant;
 
     /**
      * The name of the plan being subscribed to.
-     *
-     * @var \MichaelNabil230\MultiTenancy\Models\Plan
      */
-    protected $plan;
+    protected Plan $plan;
 
     /**
      * The date and time the start will be start.
-     *
-     * @var \Illuminate\Support\Carbon
      */
-    protected $startDate;
+    protected Carbon $startDate;
 
     /**
      * The date and time the trial will expire.
-     *
-     * @var \MichaelNabil230\MultiTenancy\Services\Period
      */
-    protected $trialEndsAt;
+    protected Period $trialEndsAt;
 
     /**
      * Indicates that the trial should end immediately.
-     *
-     * @var bool
      */
-    protected $skipTrial = false;
+    protected bool $skipTrial = false;
 
     /**
      * Indicates that the forever time.
-     *
-     * @var bool
      */
-    protected $forever = false;
+    protected bool $forever = false;
 
     /**
      * Create a new subscription builder instance.
-     *
-     * @return void
      */
     public function __construct(Tenant $tenant, Plan $plan, Carbon $startDate = null)
     {
@@ -76,8 +62,6 @@ class SubscriptionBuilder
 
     /**
      * Specify the number of days of the trial.
-     *
-     * @return $this
      */
     public function trialEndsAt(): self
     {
@@ -92,8 +76,6 @@ class SubscriptionBuilder
 
     /**
      * Force the trial to end immediately.
-     *
-     * @return $this
      */
     public function skipTrial(): self
     {
@@ -104,8 +86,6 @@ class SubscriptionBuilder
 
     /**
      * Forever time in the live :).
-     *
-     * @return $this
      */
     public function forever(): self
     {

@@ -3,27 +3,25 @@
 namespace MichaelNabil230\MultiTenancy\Middleware;
 
 use Closure;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use MichaelNabil230\MultiTenancy\Traits\IsSubdomain;
+use Symfony\Component\HttpFoundation\Response;
 
 class InitializeTenancyByDomainOrSubdomain
 {
+    use IsSubdomain;
+
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if ($this->isSubdomain($request->getHost())) {
             return app(InitializeTenancyBySubdomain::class)->handle($request, $next);
-        } else {
-            return app(InitializeTenancyByDomain::class)->handle($request, $next);
         }
-    }
 
-    protected function isSubdomain(string $hostname): bool
-    {
-        return Str::endsWith($hostname, config('multi-tenancy.central_domains'));
+        return app(InitializeTenancyByDomain::class)->handle($request, $next);
     }
 }

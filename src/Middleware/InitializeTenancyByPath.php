@@ -6,16 +6,16 @@ use Closure;
 use Illuminate\Http\Request;
 use MichaelNabil230\MultiTenancy\Exceptions\RouteIsMissingTenantParameterException;
 use MichaelNabil230\MultiTenancy\TenantFinder\TenantFinderByRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class InitializeTenancyByPath
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         // Only initialize tenancy if tenant is the first parameter
         // We don't want to initialize tenancy if the tenant is

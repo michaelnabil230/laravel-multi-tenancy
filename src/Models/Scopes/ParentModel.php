@@ -11,10 +11,8 @@ class ParentModel implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
-     *
-     * @return void
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         if (! MultiTenancy::checkCurrent()) {
             return;
@@ -23,7 +21,7 @@ class ParentModel implements Scope
         $builder->whereHas($builder->getModel()->getRelationshipToPrimaryModel());
     }
 
-    public function extend(Builder $builder)
+    public function extend(Builder $builder): void
     {
         $builder->macro('withoutParentModel', function (Builder $builder) {
             return $builder->withoutGlobalScope($this);

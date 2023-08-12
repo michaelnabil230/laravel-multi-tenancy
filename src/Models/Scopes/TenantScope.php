@@ -11,10 +11,8 @@ class TenantScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
-     *
-     * @return void
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         if (! MultiTenancy::checkCurrent()) {
             return;
@@ -23,7 +21,7 @@ class TenantScope implements Scope
         $builder->where($model->qualifyColumn('tenant_id'), tenant()->getKey());
     }
 
-    public function extend(Builder $builder)
+    public function extend(Builder $builder): void
     {
         $builder->macro('withoutTenancy', function (Builder $builder) {
             return $builder->withoutGlobalScope($this);

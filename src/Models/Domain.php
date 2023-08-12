@@ -5,13 +5,17 @@ namespace MichaelNabil230\MultiTenancy\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Str;
 use MichaelNabil230\MultiTenancy\Events\Domain as EventsDomain;
 use MichaelNabil230\MultiTenancy\MultiTenancy;
 use MichaelNabil230\MultiTenancy\Observers\DomainObserver;
+use MichaelNabil230\MultiTenancy\Traits\IsSubdomain;
 
 class Domain extends Model
 {
+    use IsSubdomain {
+        isSubdomain as checkIsSubdomain;
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -44,8 +48,6 @@ class Domain extends Model
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
     protected static function booted()
     {
@@ -67,6 +69,6 @@ class Domain extends Model
      */
     protected function isSubdomain(): Attribute
     {
-        return Attribute::get(fn () => Str::endsWith($this->domain, config('multi-tenancy.central_domains')));
+        return Attribute::get(fn () => $this->checkIsSubdomain($this->domain));
     }
 }

@@ -34,6 +34,7 @@ class TenantFinderByRequest extends TenantFinder
     private function getPayload(Request $request): array
     {
         $tenant = null;
+
         $byRoute = false;
 
         if (self::$header && $request->hasHeader(self::$header)) {

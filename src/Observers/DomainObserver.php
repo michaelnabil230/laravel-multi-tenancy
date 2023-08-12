@@ -10,10 +10,8 @@ class DomainObserver
 {
     /**
      * Handle the Domain "saving" event.
-     *
-     * @return void
      */
-    public function saving(Domain $self)
+    public function saving(Domain $self): void
     {
         $self->domain = strtolower($self->domain);
 
@@ -27,10 +25,8 @@ class DomainObserver
 
     /**
      * Handle the Domain "created" event.
-     *
-     * @return void
      */
-    public function created(Domain $domain)
+    public function created(Domain $domain): void
     {
         if ($domain->is_premium && ! $domain->is_subdomain) {
             CheckDomainVerification::dispatch($domain);
@@ -38,11 +34,9 @@ class DomainObserver
     }
 
     /**
-     * Handle the Domain "updated" event.
-     *
-     * @return void
+     * Handle the Domain "updating" event.
      */
-    public function updated(Domain $domain)
+    public function updating(Domain $domain): void
     {
         $domain->update(['is_verified' => false]);
 

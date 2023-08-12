@@ -2,10 +2,13 @@
 
 namespace MichaelNabil230\MultiTenancy\Enums;
 
-enum PeriodicityType: string
+enum PeriodicityType
 {
-    case year = 'year';
-    case month = 'month';
-    case week = 'week';
-    case day = 'day';
+    case year;
+
+    case month;
+
+    case week;
+
+    case day;
 }

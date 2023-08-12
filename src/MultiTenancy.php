@@ -22,16 +22,14 @@ class MultiTenancy
     /**
      * Set this property if you want to customize the on-fail behavior.
      *
-     * @var callable|null
+     * @var ?callable
      */
     public static $onFail = null;
 
     /**
      * The name of the container of the tenant.
-     *
-     * @var string
      */
-    public static $containerKey = 'currentTenant';
+    public static string $containerKey = 'currentTenant';
 
     /**
      * If the subscription is enabled in the config file.
@@ -57,16 +55,12 @@ class MultiTenancy
 
     /**
      * Catch any error in fail in middlewares
-     *
-     * @return callable
      */
-    public static function onFail(Exception $e, Request $request)
+    public static function onFail(Exception $exception, Request $request): callable
     {
-        $onFail = static::$onFail ?? function ($e, $request) {
-            throw $e;
-        };
+        $onFail = static::$onFail ?? fn ($exception, $request) => throw $exception;
 
-        return $onFail($e, $request);
+        return $onFail($exception, $request);
     }
 
     /**
