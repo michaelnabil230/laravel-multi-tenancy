@@ -13,7 +13,7 @@ trait HasValidationRules
      */
     public function unique(string $table, string $column = 'NULL'): Unique
     {
-        return Rule::unique($table, $column)->where('tenant_id', $this->getKey());
+        return Rule::unique($table, $column)->where('tenant_id', tenant()->getKey());
     }
 
     /**
@@ -21,6 +21,6 @@ trait HasValidationRules
      */
     public function exists(string $table, string $column = 'NULL'): Exists
     {
-        return Rule::exists($table, $column)->where('tenant_id', $this->getKey());
+        return Rule::exists($table, $column)->where('tenant_id', tenant()->getKey());
     }
 }
